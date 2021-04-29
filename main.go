@@ -18,6 +18,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -75,6 +76,7 @@ func main() {
 	// fields = append(fields, "fixtureYear")
 	// fields = append(fields, "abandonedReasonCode")
 
+	racecourses := genURLRacecourses()
 	// fixtures := genURLFixture(2021, 478)
 	// races := genURLRaces(2021, 478)
 	// going := genURLGoing(2021, 478)
@@ -84,6 +86,7 @@ func main() {
 	// fixturesFromTo := genURLFixturesFromTo(1, 3, from, to, true, fields)
 	// fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
 
+	fmt.Println(racecourses.String())
 	// fmt.Println(fixtures.String())
 	// fmt.Println(races.String())
 	// fmt.Println(going.String())

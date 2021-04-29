@@ -165,3 +165,12 @@ func genURLFixturesForMonth(page, per, year, month int, isAvailable bool, fields
 
 	return u
 }
+
+func genURLRacecourses() url.URL {
+
+	u := genURL()
+
+	u.Path = path.Join("feeds/v1/racecourses")
+
+	return u
+}

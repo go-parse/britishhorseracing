@@ -16,87 +16,79 @@ package main
  * limitations under the License.
  */
 
-import (
-	"fmt"
-	"log"
-	"strconv"
-	"strings"
-	"time"
-)
+// type fixture struct {
+// 	ID          int
+// 	Date        time.Time
+// 	Course      string
+// 	CourseID    int
+// 	Country     string
+// 	IsAvailable bool
+// 	Session     string
+// }
 
-type fixture struct {
-	ID          int
-	Date        time.Time
-	Course      string
-	CourseID    int
-	Country     string
-	IsAvailable bool
-	Session     string
-}
+// func getFixtures(link string) *[]fixture {
 
-func getFixtures(link string) *[]fixture {
+// 	f := make([]fixture, 0)
 
-	f := make([]fixture, 0)
+// 	d := struct {
+// 		Data []struct {
+// 			ID          int    `json:"fixtureId"`
+// 			Year        int    `json:"fixtureYear"`
+// 			Date        string `json:"fixtureDate"`
+// 			Course      string `json:"courseName"`
+// 			CourseID    int    `json:"courseId"`
+// 			Country     string `json:"region"`
+// 			IsAvailable bool   `json:"resultsAvailable"`
+// 			Session     string `json:"fixtureSession"`
+// 		} `json:"data"`
+// 	}{}
 
-	d := struct {
-		Data []struct {
-			ID          int    `json:"fixtureId"`
-			Year        int    `json:"fixtureYear"`
-			Date        string `json:"fixtureDate"`
-			Course      string `json:"courseName"`
-			CourseID    int    `json:"courseId"`
-			Country     string `json:"region"`
-			IsAvailable bool   `json:"resultsAvailable"`
-			Session     string `json:"fixtureSession"`
-		} `json:"data"`
-	}{}
+// 	get(link, &d)
 
-	get(link, &d)
+// 	for _, d := range d.Data {
 
-	for _, d := range d.Data {
+// 		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.Date)); e == nil {
 
-		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.Date)); e == nil {
+// 			f = append(f, fixture{
+// 				ID:          d.ID,
+// 				Date:        t.UTC(),
+// 				Course:      d.Course,
+// 				CourseID:    d.CourseID,
+// 				Country:     d.Country,
+// 				IsAvailable: d.IsAvailable,
+// 				Session:     d.Session,
+// 			})
 
-			f = append(f, fixture{
-				ID:          d.ID,
-				Date:        t.UTC(),
-				Course:      d.Course,
-				CourseID:    d.CourseID,
-				Country:     d.Country,
-				IsAvailable: d.IsAvailable,
-				Session:     d.Session,
-			})
+// 		} else {
+// 			log.Fatal(e)
+// 		}
+// 	}
 
-		} else {
-			log.Fatal(e)
-		}
-	}
+// 	return &f
+// }
 
-	return &f
-}
+// func getFixturesByMonth(year, month int) *[]fixture {
 
-func getFixturesByMonth(year, month int) *[]fixture {
+// 	return getFixtures("https://www.britishhorseracing.com/feeds/v3/fixtures?fields=courseId,fixtureDate,fixtureSession,abandonedReasonCode,&resultsAvailable=true&order=desc&year=" + strconv.Itoa(year) + "&month=" + strconv.Itoa(month) + "=5&per_page=1000")
+// }
 
-	return getFixtures("https://www.britishhorseracing.com/feeds/v3/fixtures?fields=courseId,fixtureDate,fixtureSession,abandonedReasonCode,&resultsAvailable=true&order=desc&year=" + strconv.Itoa(year) + "&month=" + strconv.Itoa(month) + "=5&per_page=1000")
-}
+// func getFixturesNextDays(days int) *[]fixture {
 
-func getFixturesNextDays(days int) *[]fixture {
+// 	from := time.Now().UTC()
 
-	from := time.Now().UTC()
+// 	to := from.AddDate(0, 0, days)
 
-	to := from.AddDate(0, 0, days)
+// 	dfb := "https://www.britishhorseracing.com/feeds/v3/fixtures?fields=abandonedReasonCode,courseId,courseName,fixtureYear,fixtureId,fixtureDate,distance,firstRace,firstRaceTime,fixtureName,fixtureSession,fixtureType,highlightTitle,majorEvent,meetingId,&resultsAvailable=false,bcsEvent&fromdate=" + from.Format("20060102") + "&per_page=1000&todate=" + to.Format("20060102")
 
-	dfb := "https://www.britishhorseracing.com/feeds/v3/fixtures?fields=abandonedReasonCode,courseId,courseName,fixtureYear,fixtureId,fixtureDate,distance,firstRace,firstRaceTime,fixtureName,fixtureSession,fixtureType,highlightTitle,majorEvent,meetingId,&resultsAvailable=false,bcsEvent&fromdate=" + from.Format("20060102") + "&per_page=1000&todate=" + to.Format("20060102")
+// 	return getFixtures(dfb)
+// }
 
-	return getFixtures(dfb)
-}
+// func saveFixtures() {
 
-func saveFixtures() {
+// 	for _, d := range *getFixturesByMonth(2009, 1) {
 
-	for _, d := range *getFixturesByMonth(2009, 1) {
+// 		fmt.Println(d)
 
-		fmt.Println(d)
+// 	}
 
-	}
-
-}
+// }

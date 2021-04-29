@@ -30,11 +30,11 @@ var transport = &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify:
 
 var client = http.Client{Transport: transport, Timeout: time.Minute * 5}
 
-func get(link string, data interface{}) {
+func getJSON(u url.URL, data interface{}) {
 
 	proxyconnect := func () {
 		configProxy()
-		get(link, data)
+		getJSON(u, data)
 	}
 
 	var req *http.Request
@@ -42,7 +42,7 @@ func get(link string, data interface{}) {
 
 	transport.Proxy = http.ProxyURL(&url.URL{Host: config.Proxy.Host+":"+config.Proxy.Port})
 
-	if r, e := http.NewRequest("GET", link, nil); e == nil {
+	if r, e := http.NewRequest("GET", u.String(), nil); e == nil {
 		req = r
 	} else {
 		log.Fatal(e)
