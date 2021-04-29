@@ -18,11 +18,11 @@ package main
 
 import (
 	"crypto/tls"
-	"encoding/json"
-	"io/ioutil"
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -32,10 +32,15 @@ var client = http.Client{Transport: transport, Timeout: time.Minute * 5}
 
 func get(link string, data interface{}) {
 
+	proxyconnect := func () {
+		configProxy()
+		get(link, data)
+	}
+
 	var req *http.Request
 	var res *http.Response
 
-	transport.Proxy = http.ProxyURL(&url.URL{Host: Proxy})
+	transport.Proxy = http.ProxyURL(&url.URL{Host: config.Proxy.Host+":"+config.Proxy.Port})
 
 	if r, e := http.NewRequest("GET", link, nil); e == nil {
 		req = r
@@ -57,16 +62,25 @@ func get(link string, data interface{}) {
 	if r, e := client.Do(req); e == nil {
 		res = r
 	} else {
-		log.Fatal(e)
+
+		se := e.Error()
+
+		fmt.Print("\033[1;" + colorE+"m")
+		
+		if strings.Contains(se, "proxyconnect") {
+			log.Println("\033[0;" + colorE+"m"+se+"\033[000m")
+			proxyconnect()
+		} else {
+			log.Fatal("\033[0;" + colorE+"m"+se+"\033[000m")
+		}
 	}
 
-	log.Println("get:", res.StatusCode, link)
-
-	if b, e := ioutil.ReadAll(res.Body); e == nil {
-		if e := json.Unmarshal(b, &data); e != nil {
-			log.Fatal(e)
-		}
+	if res.StatusCode == 200 {
+		fmt.Print("\033[1;" + colorM+"m")
+		log.Println("get status:\033[0;" + colorM+"m", res.StatusCode, "\033[000m")
 	} else {
-		log.Fatal(e)
+		fmt.Print("\033[1;" + colorE+"m")
+		log.Println("get status:\033[0;" + colorE+"m", res.StatusCode, "\033[000m")
+		proxyconnect()
 	}
 }

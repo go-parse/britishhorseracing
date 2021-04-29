@@ -18,100 +18,79 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
-	"log"
-	"os"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-type configuration struct {
-	DBUser     string `json:"DB_USER"`
-	DBName     string `json:"DB_NAME"`
-	DBPassword string `json:"DB_PASSWORD"`
-	DBHost     string `json:"DB_HOST"`
-	DBPort     string `json:"DB_PORT"`
-	Proxy      string `json:"PROXY"`
-}
+var config = struct {
+	DB struct {
+		Host string `yaml:"host"`
+		Port string `yaml:"port"`
+		Name string `yaml:"name"`
+		User string `yaml:"user"`
+		Pass string `yaml:"pass"`
+	} `yaml:"mdatabase"`
+
+	Proxy struct {
+		Host string `yaml:"host"`
+		Port string `yaml:"port"`
+	} `yaml:"proxy"`
+}{}
+
+var flags = struct {
+	db    *bool
+	proxy *bool
+} {}
 
 var DB *sql.DB
 var Proxy = ""
 
+const colorM = "32" // Message
+const colorE = "31" // Error
+
 func main() {
 
-	configuration := configuration{}
+	listener()
+	initialization()
 
-	if home, e := os.UserHomeDir(); e == nil {
+	// from := time.Now().UTC().AddDate(-2, 0, 0)
 
-		if f, e := os.Open(home + "/.britishhorseracing.json"); e == nil {
+	// to := from.AddDate(0, 0, 10)
 
-			if b, e := ioutil.ReadAll(f); e == nil {
+	// fields := make([]string, 0)
+	// fields = append(fields, "courseId")
+	// fields = append(fields, "fixtureId")
+	// fields = append(fields, "meetingId")
+	// fields = append(fields, "fixtureDate")
+	// fields = append(fields, "firstRaceTime")
+	// fields = append(fields, "fixtureName")
+	// fields = append(fields, "fixtureSession")
+	// fields = append(fields, "bcsEvent")
+	// fields = append(fields, "fixtureType")
+	// fields = append(fields, "highlightTitle")
+	// fields = append(fields, "firstRace")
+	// fields = append(fields, "majorEvent")
+	// fields = append(fields, "distance")
+	// fields = append(fields, "courseName")
+	// fields = append(fields, "fixtureYear")
+	// fields = append(fields, "abandonedReasonCode")
 
-				json.Unmarshal(b, &configuration)
+	// fixtures := genURLFixture(2021, 478)
+	// races := genURLRaces(2021, 478)
+	// going := genURLGoing(2021, 478)
+	// race := genURLRace(2021, 45563)
+	// entries := genURLEntries(2021, 45563)
+	// nonrunners := genURLNonrunners(2021, 45563)
+	// fixturesFromTo := genURLFixturesFromTo(1, 3, from, to, true, fields)
+	// fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
 
-			} else {
-				log.Fatal(e)
-			}
-
-		} else if f, e := json.MarshalIndent(configuration, "", " "); e == nil {
-			if e := ioutil.WriteFile(home+"/.britishhorseracing.json", f, 0644); e != nil {
-				log.Fatal(e)
-			}
-		}
-
-	} else {
-		log.Fatal(e)
-	}
-
-	Proxy = configuration.Proxy
-
-	if db, e := sql.Open("mysql", configuration.DBUser+":"+configuration.DBPassword+"@tcp("+configuration.DBHost+":"+configuration.DBPort+")/"+configuration.DBName+"?net_write_timeout=8640000"); e == nil {
-		DB = db
-	} else {
-		log.Fatal(e)
-	}
-
-	from := time.Now().UTC().AddDate(-2, 0, 0)
-
-	to := from.AddDate(0, 0, 10)
-
-	fields := make([]string, 0)
-	fields = append(fields, "courseId")
-	fields = append(fields, "fixtureId")
-	fields = append(fields, "meetingId")
-	fields = append(fields, "fixtureDate")
-	fields = append(fields, "firstRaceTime")
-	fields = append(fields, "fixtureName")
-	fields = append(fields, "fixtureSession")
-	fields = append(fields, "bcsEvent")
-	fields = append(fields, "fixtureType")
-	fields = append(fields, "highlightTitle")
-	fields = append(fields, "firstRace")
-	fields = append(fields, "majorEvent")
-	fields = append(fields, "distance")
-	fields = append(fields, "courseName")
-	fields = append(fields, "fixtureYear")
-	fields = append(fields, "abandonedReasonCode")
-
-	fixtures := genURLFixture(2021, 478)
-	races := genURLRaces(2021, 478)
-	going := genURLGoing(2021, 478)
-	race := genURLRace(2021, 45563)
-	entries := genURLEntries(2021, 45563)
-	nonrunners := genURLNonrunners(2021, 45563)
-	fixturesFromTo := genURLFixturesFromTo(1, 3, from, to, true, fields)
-	fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
-
-	fmt.Println(fixtures.String())
-	fmt.Println(races.String())
-	fmt.Println(going.String())
-	fmt.Println(race.String())
-	fmt.Println(entries.String())
-	fmt.Println(nonrunners.String())
-	fmt.Println(fixturesFromTo.String())
-	fmt.Println(fixturesForMonth.String())
+	// fmt.Println(fixtures.String())
+	// fmt.Println(races.String())
+	// fmt.Println(going.String())
+	// fmt.Println(race.String())
+	// fmt.Println(entries.String())
+	// fmt.Println(nonrunners.String())
+	// fmt.Println(fixturesFromTo.String())
+	// fmt.Println(fixturesForMonth.String())
 
 }
