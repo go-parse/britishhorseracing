@@ -54,6 +54,10 @@ func main() {
 	listener()
 	initialization()
 
+	for _, row := range  getJSONRacecourses() {
+		fmt.Println(row)
+	}
+
 	// from := time.Now().UTC().AddDate(-2, 0, 0)
 
 	// to := from.AddDate(0, 0, 10)
@@ -76,7 +80,7 @@ func main() {
 	// fields = append(fields, "fixtureYear")
 	// fields = append(fields, "abandonedReasonCode")
 
-	racecourses := genURLRacecourses()
+	// racecourses := genURLRacecourses()
 	// fixtures := genURLFixture(2021, 478)
 	// races := genURLRaces(2021, 478)
 	// going := genURLGoing(2021, 478)
@@ -86,7 +90,7 @@ func main() {
 	// fixturesFromTo := genURLFixturesFromTo(1, 3, from, to, true, fields)
 	// fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
 
-	fmt.Println(racecourses.String())
+	// fmt.Println(racecourses.String())
 	// fmt.Println(fixtures.String())
 	// fmt.Println(races.String())
 	// fmt.Println(going.String())

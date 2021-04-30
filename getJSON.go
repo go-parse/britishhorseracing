@@ -18,10 +18,13 @@ package main
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -30,11 +33,13 @@ var transport = &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify:
 
 var client = http.Client{Transport: transport, Timeout: time.Minute * 5}
 
-func getJSON(u url.URL, data interface{}) {
+var getJSONData interface{}
+
+func getJSON(u *url.URL) {
 
 	proxyconnect := func () {
 		configProxy()
-		getJSON(u, data)
+		getJSON(u)
 	}
 
 	var req *http.Request
@@ -83,4 +88,78 @@ func getJSON(u url.URL, data interface{}) {
 		log.Println("get status:\033[0;" + colorE+"m", res.StatusCode, "\033[000m")
 		proxyconnect()
 	}
+
+	if b, e := ioutil.ReadAll(res.Body); e == nil {
+
+		if e := json.Unmarshal(b, &getJSONData); e != nil {
+			log.Fatal(e)
+		}
+	}
+}
+
+func getJSONRacecourses() []Racecourse {
+
+	r := make([]Racecourse, 0)
+
+	d := struct {
+		Data []struct{
+			ID int `json:"courseId"`
+			Name string `json:"name"`
+			Type string `json:"type"`
+			Handedness string `json:"trackHandedness"`
+			Region string `json:"region"`
+			Post string `json:"postcode"`
+			Latitude string `json:"latitude"`
+			Longitude string `json:"longitude"`
+			FirstRace string `json:"firstRace"`
+			NextFixture string `json:"nextFixtureDate"`
+		} `json:"data"`
+	} {}
+
+	u := genURLRacecourses()
+
+	getJSONData = &d
+
+	getJSON(&u)
+
+
+	for _, d := range d.Data {
+
+		var firstRace time.Time
+		var nextFixture time.Time
+
+		latitude, err := strconv.ParseFloat(strings.TrimSpace(d.Latitude), 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		longitude, err := strconv.ParseFloat(strings.TrimSpace(d.Longitude), 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if t, e := time.Parse("2006-01-02 15:04:05", strings.TrimSpace(d.FirstRace));  e == nil {
+			firstRace = t
+		}
+
+		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.NextFixture));  e == nil {
+			nextFixture = t
+		}
+
+		r = append(r, Racecourse{
+			ID : d.ID,
+			Name: d.Name,
+			Type : strings.ToUpper(d.Type),
+			Handedness : strings.ToUpper(d.Handedness),
+			Region : strings.ToUpper(d.Region),
+			Post : strings.ToUpper(d.Post),
+			Latitude : latitude,
+			Longitude : longitude,
+			FirstRace : firstRace,
+			NextFixture : nextFixture,
+		})
+	}
+
+	return r
+
 }

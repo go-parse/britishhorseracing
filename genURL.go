@@ -36,6 +36,15 @@ func genURL() url.URL {
 	return u
 }
 
+func genURLRacecourses() url.URL {
+
+	u := genURL()
+
+	u.Path = path.Join("feeds/v1/racecourses")
+
+	return u
+}
+
 func genURLFixture(year, fixtureID int) url.URL {
 
 	u := genURL()
@@ -162,15 +171,6 @@ func genURLFixturesForMonth(page, per, year, month int, isAvailable bool, fields
 	q.Set("month", strconv.Itoa(month))
 
 	u.RawQuery = q.Encode()
-
-	return u
-}
-
-func genURLRacecourses() url.URL {
-
-	u := genURL()
-
-	u.Path = path.Join("feeds/v1/racecourses")
 
 	return u
 }
