@@ -19,6 +19,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"strings"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -57,6 +59,9 @@ func main() {
 	for _, row := range  getJSONRacecourses() {
 		fmt.Println(row)
 	}
+
+	// fmt.Println(getJSOFixture(2021, 12763))
+
 
 	// from := time.Now().UTC().AddDate(-2, 0, 0)
 
@@ -100,4 +105,17 @@ func main() {
 	// fmt.Println(fixturesFromTo.String())
 	// fmt.Println(fixturesForMonth.String())
 
+}
+
+
+func datatimeParse(datatime string) time.Time {
+
+	var r time.Time
+
+	if t, e := time.Parse("2006-01-02 15:04:05", strings.TrimSpace(datatime)); e == nil {
+		r = t.UTC()
+	}
+	
+	return r
+	
 }

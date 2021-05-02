@@ -71,12 +71,10 @@ func getJSON(u *url.URL) {
 		se := e.Error()
 
 		fmt.Print("\033[1;" + colorE+"m")
+		log.Println("\033[0;" + colorE+"m"+se+"\033[000m")
 		
-		if strings.Contains(se, "proxyconnect") {
-			log.Println("\033[0;" + colorE+"m"+se+"\033[000m")
+		if strings.Contains(se, "proxyconnect") || strings.Contains(se, "connection") {
 			proxyconnect()
-		} else {
-			log.Fatal("\033[0;" + colorE+"m"+se+"\033[000m")
 		}
 	}
 
@@ -103,16 +101,16 @@ func getJSONRacecourses() []Racecourse {
 
 	d := struct {
 		Data []struct{
-			ID int `json:"courseId"`
-			Name string `json:"name"`
-			Type string `json:"type"`
-			Handedness string `json:"trackHandedness"`
-			Region string `json:"region"`
-			Post string `json:"postcode"`
-			Latitude string `json:"latitude"`
-			Longitude string `json:"longitude"`
-			FirstRace string `json:"firstRace"`
-			NextFixture string `json:"nextFixtureDate"`
+			CourseId int
+			Name string
+			Type string
+			TrackHandedness string
+			Region string
+			Postcode string
+			Latitude string
+			Longitude string
+			FirstRace string
+			NextFixtureDate string
 		} `json:"data"`
 	} {}
 
@@ -125,7 +123,6 @@ func getJSONRacecourses() []Racecourse {
 
 	for _, d := range d.Data {
 
-		var firstRace time.Time
 		var nextFixture time.Time
 
 		latitude, err := strconv.ParseFloat(strings.TrimSpace(d.Latitude), 64)
@@ -138,28 +135,95 @@ func getJSONRacecourses() []Racecourse {
 			log.Fatal(err)
 		}
 
-		if t, e := time.Parse("2006-01-02 15:04:05", strings.TrimSpace(d.FirstRace));  e == nil {
-			firstRace = t
-		}
-
-		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.NextFixture));  e == nil {
+		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.NextFixtureDate));  e == nil {
 			nextFixture = t
 		}
 
 		r = append(r, Racecourse{
-			ID : d.ID,
+			ID : d.CourseId,
 			Name: d.Name,
 			Type : strings.ToUpper(d.Type),
-			Handedness : strings.ToUpper(d.Handedness),
+			Handedness : strings.ToUpper(d.TrackHandedness),
 			Region : strings.ToUpper(d.Region),
-			Post : strings.ToUpper(d.Post),
-			Latitude : latitude,
-			Longitude : longitude,
-			FirstRace : firstRace,
+			Post : strings.ToUpper(d.Postcode),
+			Coordinate: GEO{Latitude : latitude, Longitude : longitude},
+			FirstRace : datatimeParse(d.FirstRace),
 			NextFixture : nextFixture,
 		})
 	}
 
 	return r
+}
 
+func getJSONFixture(year, fixtureID int) Fixture {
+
+	var r Fixture
+
+	d := struct {
+		Data []struct{
+			FixtureID int 
+			FixtureYear int 
+			FixtureDate string 
+			MetingID int 
+			CourseID int 
+			CourseName string 
+			TicketsLink string 
+			AlertLevel int 
+			AbandonedReasonCode int 
+			FixtureType string 
+			FixtureSession string 
+			RacingTrackType string 
+			RacePlanningCode string 
+			StewardsReport string  
+			ResultsAvailable int 
+			WeatherText string 
+			WeatherUpdatedAt string 
+			StallsText string 
+			StallsUpdatedAt string 
+			GoingText string 
+			GoingUpdatedAt string 
+			InspectionsText string 
+			InspectionsUpdatedAt string
+			RailText string 
+			RailUpdatedAt string 
+			OtherText string 
+			OtherUpdatedAt string
+			WateringText string
+			WateringUpdatedAt string
+			LastUpdated string
+		} `json:"data"`
+	} {}
+
+	u := genURLFixture(year, fixtureID)
+
+	getJSONData = &d
+
+	getJSON(&u)
+
+	if len(d.Data) > 0 {
+
+		r = Fixture {
+			ID: d.Data[0].FixtureID,
+			Year: d.Data[0].FixtureYear,
+			Date: d.Data[0].FixtureDate,
+			MetingID : d.Data[0].MetingID,
+			RacecourseID: d.Data[0].CourseID,
+			Racecourse: d.Data[0].CourseName,
+			Abandoned : d.Data[0].AbandonedReasonCode > 0,
+			Type: d.Data[0].FixtureType,
+			Session: d.Data[0].FixtureSession,
+			Surface: d.Data[0].RacingTrackType,
+			Planning: d.Data[0].RacePlanningCode,
+			Weather: TU{T: d.Data[0].WateringText, U: datatimeParse(d.Data[0].WateringUpdatedAt)},
+			Stalls: TU{T: d.Data[0].StallsText, U: datatimeParse(d.Data[0].StallsUpdatedAt)},
+			Going: TU{T: d.Data[0].GoingText, U: datatimeParse(d.Data[0].GoingUpdatedAt)},
+			Inspection: TU{T: d.Data[0].InspectionsText, U: datatimeParse(d.Data[0].InspectionsText)},
+			Rail: TU{T: d.Data[0].RailText, U: datatimeParse(d.Data[0].RailUpdatedAt)},
+			Watering: TU{T: d.Data[0].WateringText, U: datatimeParse(d.Data[0].WateringUpdatedAt)},
+			Other: TU{T: d.Data[0].OtherText, U: datatimeParse(d.Data[0].OtherUpdatedAt)},
+			Updated: datatimeParse(d.Data[0].LastUpdated),
+		}
+	}
+
+	return r
 }
