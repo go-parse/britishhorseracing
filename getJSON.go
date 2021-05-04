@@ -216,3 +216,67 @@ func getJSONFixture(year, fixtureID int) Fixture {
 
 	return r
 }
+
+func getJSONRaces(year, fixtureID int) []Race {
+
+	r := make([]Race, 0)
+
+	d := struct {
+		Data []struct{
+			RaceId int
+			YearOfRace int
+			DivisionSequence int
+			RaceDate string
+			RaceTime string
+			RaceName string
+			AgeLimit string
+			PrizeAmount int
+			PrizeCurrency string
+			RaceClass int
+			RatingBand string
+			RawDistanceText string
+			DistanceValue int
+			DistanceText string
+			DistanceChange int
+			RaceCriteriaRaceType string
+			AbandonedReasonCode int
+			BlackTypeRace int
+			DistanceChangeText string
+			Plus10 bool
+			WinnersDetails []struct {
+				Position int
+				JockeyName string
+				Trainername string
+				SilkImage string
+				RacehorseName string
+			}
+
+		} `json:"data"`
+	} {}
+
+	getJSON(genURLRaces(year, fixtureID), &d)
+
+	for _, d := range d.Data {
+
+		r = append(r, Race{
+			ID: d.RaceId,
+			Year: d.YearOfRace,
+			Division: d.DivisionSequence, 
+			Datatime: datatimeParse(d.RaceDate+" "+d.RaceTime),
+			Name: d.RaceName,
+			Age: d.AgeLimit,
+			Prize: d.PrizeAmount, 
+			Currency: d.PrizeCurrency, 
+			Class: d.RaceClass,
+			Band: d.RatingBand,
+			Distance: d.DistanceValue,
+			Change: d.DistanceChange,
+			Type: d.RaceCriteriaRaceType,
+			Abandoned:  d.AbandonedReasonCode > 0,
+			Black: d.BlackTypeRace > 0,
+			Plus10 : d.Plus10,
+		})
+	}
+
+	return r
+}

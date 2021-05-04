@@ -44,3 +44,22 @@ type Fixture struct {
 	Other TU `json:"OTHER"`
 	Updated time.Time `json:"UPDATED"`
 }
+
+type Race struct {
+	ID int `json:"ID"`
+	Year int `json:"YEAR"`
+	Division int `json:"DIVISION"`
+	Datatime time.Time `json:"DATATIME"`
+	Name string `json:"NAME"`
+	Age string `json:"AGE"`
+	Prize int `json:"PRIZE"`
+	Currency string `json:"CURRENCY"`
+	Class int `json:"CLASS"`
+	Band string `json:"BAND"`
+	Distance int `json:"DISTANCE"`
+	Change int `json:"CHANGE"`
+	Type string `json:"TYPE"`
+	Abandoned bool `json:"ABANDONED"`
+	Black bool `json:"BLACK"`
+	Plus10 bool `json:"PLUS10"`
+}
