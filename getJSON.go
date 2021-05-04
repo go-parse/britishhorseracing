@@ -33,17 +33,14 @@ var transport = &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify:
 
 var client = http.Client{Transport: transport, Timeout: time.Minute * 5}
 
-var getJSONData interface{}
+func getJSON(u url.URL, data interface{}) {
 
-func getJSON(u *url.URL) {
+	var req *http.Request
 
 	proxyconnect := func () {
 		configProxy()
-		getJSON(u)
+		getJSON(u, data)
 	}
-
-	var req *http.Request
-	var res *http.Response
 
 	transport.Proxy = http.ProxyURL(&url.URL{Host: config.Proxy.Host+":"+config.Proxy.Port})
 
@@ -65,7 +62,23 @@ func getJSON(u *url.URL) {
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15")
 
 	if r, e := client.Do(req); e == nil {
-		res = r
+
+		if r.StatusCode == 200 {
+			fmt.Print("\033[1;" + colorM+"m")
+			log.Println("get status:\033[0;" + colorM+"m", r.StatusCode, "\033[000m")
+		} else {
+			fmt.Print("\033[1;" + colorE+"m")
+			log.Println("get status:\033[0;" + colorE+"m", r.StatusCode, "\033[000m")
+			proxyconnect()
+		}
+	
+		if b, e := ioutil.ReadAll(r.Body); e == nil {
+	
+			if e := json.Unmarshal(b, data); e != nil {
+				log.Fatal(e)
+			}
+		}
+
 	} else {
 
 		se := e.Error()
@@ -73,24 +86,8 @@ func getJSON(u *url.URL) {
 		fmt.Print("\033[1;" + colorE+"m")
 		log.Println("\033[0;" + colorE+"m"+se+"\033[000m")
 		
-		if strings.Contains(se, "proxyconnect") || strings.Contains(se, "connection") {
+		if strings.Contains(se, "proxyconnect") || strings.Contains(se, "connection")|| strings.Contains(se, "exceeded") {
 			proxyconnect()
-		}
-	}
-
-	if res.StatusCode == 200 {
-		fmt.Print("\033[1;" + colorM+"m")
-		log.Println("get status:\033[0;" + colorM+"m", res.StatusCode, "\033[000m")
-	} else {
-		fmt.Print("\033[1;" + colorE+"m")
-		log.Println("get status:\033[0;" + colorE+"m", res.StatusCode, "\033[000m")
-		proxyconnect()
-	}
-
-	if b, e := ioutil.ReadAll(res.Body); e == nil {
-
-		if e := json.Unmarshal(b, &getJSONData); e != nil {
-			log.Fatal(e)
 		}
 	}
 }
@@ -114,11 +111,7 @@ func getJSONRacecourses() []Racecourse {
 		} `json:"data"`
 	} {}
 
-	u := genURLRacecourses()
-
-	getJSONData = &d
-
-	getJSON(&u)
+	getJSON(genURLRacecourses(), &d)
 
 
 	for _, d := range d.Data {
@@ -194,11 +187,7 @@ func getJSONFixture(year, fixtureID int) Fixture {
 		} `json:"data"`
 	} {}
 
-	u := genURLFixture(year, fixtureID)
-
-	getJSONData = &d
-
-	getJSON(&u)
+	getJSON(genURLFixture(year, fixtureID), &d)
 
 	if len(d.Data) > 0 {
 
