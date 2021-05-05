@@ -47,3 +47,25 @@ for _, d := range  getJSONRaces(year, fixtureID) {
 	fmt.Println("Plus10:", d.Plus10)
 }
 ```
+
+#### **Get going**
+```Go
+
+year := 2021
+fixtureID := 12763
+
+going := getJSONGoing(2021, 715)
+	
+fmt.Println("CourseID:", going.CourseID)
+fmt.Println("CourseID:", going.CourseID)
+fmt.Println("Datatime:", going.Datatime)
+fmt.Println("Type:", going.Type)
+fmt.Println("Code:", going.Code)
+fmt.Println("Ground:", going.Ground)
+fmt.Println("Stick:", going.Stick)
+fmt.Println("Rails:", going.Rails)
+fmt.Println("Stalls:", going.Stalls)
+fmt.Println("Weather:", going.Weather)
+fmt.Println("Watering:", going.Watering)
+fmt.Println("WateringStatus:", going.WateringStatus)
+```

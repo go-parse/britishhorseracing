@@ -251,7 +251,7 @@ func getJSONRaces(year, fixtureID int) []Race {
 				RacehorseName string
 			}
 
-		} `json:"data"`
+		}
 	} {}
 
 	getJSON(genURLRaces(year, fixtureID), &d)
@@ -260,7 +260,6 @@ func getJSONRaces(year, fixtureID int) []Race {
 
 		r = append(r, Race{
 			ID: d.RaceId,
-			Year: d.YearOfRace,
 			Division: d.DivisionSequence, 
 			Datatime: datatimeParse(d.RaceDate+" "+d.RaceTime),
 			Name: d.RaceName,
@@ -279,4 +278,86 @@ func getJSONRaces(year, fixtureID int) []Race {
 	}
 
 	return r
+}
+
+func getJSONGoing(year, fixtureID int) Going {
+
+	d := struct {
+		Data struct{
+			FixtureId int
+			CourseId int
+			FixtureYear int
+			FixtureDate string
+			FixtureType string
+			Conditions struct {
+				Ground int
+				GroundText string
+				GoingStick string
+				GoingStickAvailable int
+				GoingStickUpdatedAt string
+				Rails string
+				Stalls string
+				WeatherComment string
+				Other string
+				Watering string
+				WateringStatus string
+			}
+
+			ConditionsHistory []struct {
+                FixtureId int
+                CourseId int
+                FixtureYear int
+                FixtureDate string
+                FixtureType string
+                TrackType string
+                FixtureSession string
+				Conditions struct {
+					Ground int
+					GoingStick string
+					GoingStickAvailable int
+					GoingStickUpdatedAt string
+					Rails string
+					Stalls string
+					WeatherComment string
+					BookingComment string
+					Other string
+					Watering string
+					WateringStatus string
+					groundText struct {
+                        Code int
+                        Description string
+					}
+					CreationTimestamp string
+				}
+				
+				Tracks [] struct {
+					TrackId int
+					RaceType string
+				}
+			}
+		}
+	} {}
+
+	getJSON(genURLGoing(year, fixtureID), &d)
+
+	stick := -1.0
+
+	if f, e := strconv.ParseFloat(d.Data.Conditions.GoingStick, 64); e == nil {
+		stick = f
+	}
+
+	return Going {
+		FixtureID: d.Data.FixtureId,
+		CourseID: d.Data.CourseId,
+		Datatime: dataParse(d.Data.FixtureDate),
+		Type: d.Data.FixtureType,
+		Code: d.Data.Conditions.Ground,
+		Ground: d.Data.Conditions.GroundText,
+		Stick: FU{F: stick, U: datatimeParse(d.Data.Conditions.GoingStickUpdatedAt)},
+		Rails: d.Data.Conditions.Rails,
+		Stalls: d.Data.Conditions.Stalls,
+		Weather: d.Data.Conditions.WeatherComment,
+		Watering: d.Data.Conditions.Watering,
+		WateringStatus: d.Data.Conditions.WateringStatus,
+	}
 }

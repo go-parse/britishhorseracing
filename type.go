@@ -6,6 +6,10 @@ type TU struct {
 	T string `json:"T"` // Text
 	U time.Time `json:"U"` // Updated 
 }
+type FU struct {
+	F float64 `json:"T"` // Float
+	U time.Time `json:"U"` // Updated 
+}
 type GEO  struct {
 	Latitude float64 `json:"LATITUDE"` 
 	Longitude float64 `json:"LONGITUDE"`
@@ -47,7 +51,6 @@ type Fixture struct {
 
 type Race struct {
 	ID int `json:"ID"`
-	Year int `json:"YEAR"`
 	Division int `json:"DIVISION"`
 	Datatime time.Time `json:"DATATIME"`
 	Name string `json:"NAME"`
@@ -62,4 +65,18 @@ type Race struct {
 	Abandoned bool `json:"ABANDONED"`
 	Black bool `json:"BLACK"`
 	Plus10 bool `json:"PLUS10"`
+}
+type Going struct {
+	FixtureID int `json:"FIXTURE_ID"`
+	CourseID int `json:"COURSE_ID"`
+	Datatime time.Time `json:"DATATIME"`
+	Type string `json:"TYPE"`
+	Code int `json:"CODE"`
+	Ground string `json:"GROUND"`
+	Stick FU `json:"STICK"`
+	Rails string `json:"RAILS"`
+	Stalls string `json:"STALLS"`
+	Weather string `json:"WEATHER"`
+	Watering string `json:"WATERING"`
+	WateringStatus string `json:"WATERING_STATUS"`
 }

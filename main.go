@@ -72,26 +72,41 @@ func main() {
 	// fmt.Println(getJSONFixture(2021, 12763))
 
 
-	for _, d := range  getJSONRaces(2021, 12763) {
-		fmt.Println("ID:", d.ID)
-		fmt.Println("Year:", d.Year)
-		fmt.Println("Division:", d.Division)
-		fmt.Println("Datatime:", d.Datatime)
-		fmt.Println("Name:", d.Name)
-		fmt.Println("Age:", d.Age)
-		fmt.Println("Prize:", d.Prize)
-		fmt.Println("Currency:", d.Currency)
-		fmt.Println("Class:", d.Class)
-		fmt.Println("Band:", d.Band)
-		fmt.Println("Distance:", d.Distance)
-		fmt.Println("Change:", d.Change)
-		fmt.Println("Type:", d.Type)
-		fmt.Println("Abandoned:", d.Abandoned)
-		fmt.Println("Black:", d.Black)
-		fmt.Println("Plus10:", d.Plus10)
-		fmt.Println("_______________")
-	}
+	// for _, d := range  getJSONRaces(2021, 12763) {
+	// 	fmt.Println("ID:", d.ID)
+	// 	fmt.Println("Year:", d.Year)
+	// 	fmt.Println("Division:", d.Division)
+	// 	fmt.Println("Datatime:", d.Datatime)
+	// 	fmt.Println("Name:", d.Name)
+	// 	fmt.Println("Age:", d.Age)
+	// 	fmt.Println("Prize:", d.Prize)
+	// 	fmt.Println("Currency:", d.Currency)
+	// 	fmt.Println("Class:", d.Class)
+	// 	fmt.Println("Band:", d.Band)
+	// 	fmt.Println("Distance:", d.Distance)
+	// 	fmt.Println("Change:", d.Change)
+	// 	fmt.Println("Type:", d.Type)
+	// 	fmt.Println("Abandoned:", d.Abandoned)
+	// 	fmt.Println("Black:", d.Black)
+	// 	fmt.Println("Plus10:", d.Plus10)
+	// 	fmt.Println("_______________")
+	// }
+	// https://www.britishhorseracing.com/feeds/v3/fixtures/2021/715/going
 
+	going := getJSONGoing(2021, 715)
+	
+	fmt.Println("CourseID:", going.CourseID)
+	fmt.Println("CourseID:", going.CourseID)
+	fmt.Println("Datatime:", going.Datatime)
+	fmt.Println("Type:", going.Type)
+	fmt.Println("Code:", going.Code)
+	fmt.Println("Ground:", going.Ground)
+	fmt.Println("Stick:", going.Stick)
+	fmt.Println("Rails:", going.Rails)
+	fmt.Println("Stalls:", going.Stalls)
+	fmt.Println("Weather:", going.Weather)
+	fmt.Println("Watering:", going.Watering)
+	fmt.Println("WateringStatus:", going.WateringStatus)
 
 	// from := time.Now().UTC().AddDate(-2, 0, 0)
 
@@ -139,6 +154,16 @@ func main() {
 
 }
 
+func dataParse(datatime string) time.Time {
+
+	var r time.Time
+
+	if t, e := time.Parse("2006-01-02", strings.TrimSpace(datatime)); e == nil {
+		r = t.UTC()
+	}
+	
+	return r
+}
 
 func datatimeParse(datatime string) time.Time {
 
@@ -149,5 +174,4 @@ func datatimeParse(datatime string) time.Time {
 	}
 	
 	return r
-	
 }
