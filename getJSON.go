@@ -184,7 +184,7 @@ func getJSONFixture(year, fixtureID int) Fixture {
 			WateringText string
 			WateringUpdatedAt string
 			LastUpdated string
-		} `json:"data"`
+		}
 	} {}
 
 	getJSON(genURLFixture(year, fixtureID), &d)
@@ -193,8 +193,7 @@ func getJSONFixture(year, fixtureID int) Fixture {
 
 		r = Fixture {
 			ID: d.Data[0].FixtureID,
-			Year: d.Data[0].FixtureYear,
-			Date: d.Data[0].FixtureDate,
+			Date: dataParse(d.Data[0].FixtureDate),
 			MetingID : d.Data[0].MetingID,
 			RacecourseID: d.Data[0].CourseID,
 			Racecourse: d.Data[0].CourseName,
@@ -329,7 +328,7 @@ func getJSONGoing(year, fixtureID int) Going {
 					}
 					CreationTimestamp string
 				}
-				
+
 				Tracks [] struct {
 					TrackId int
 					RaceType string

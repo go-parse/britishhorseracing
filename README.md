@@ -20,7 +20,27 @@ for _, d := range  getJSONRacecourses() {
 year := 2021
 fixtureID := 12763
 
-fmt.Println(getJSONFixture(year, fixtureID))
+fixture := getJSONFixture(2021, 12763)
+
+fmt.Println("ID:", fixture.ID)
+fmt.Println("Date:", fixture.Date)
+fmt.Println("MetingID:", fixture.MetingID)
+fmt.Println("RacecourseID:", fixture.RacecourseID)
+fmt.Println("Racecourse:", fixture.Racecourse)
+fmt.Println("Abandoned:", fixture.Abandoned)
+fmt.Println("Type:", fixture.Type)
+fmt.Println("Type:", fixture.Type)
+fmt.Println("Session:", fixture.Session)
+fmt.Println("Surface:", fixture.Surface)
+fmt.Println("Planning:", fixture.Planning)
+fmt.Println("Weather:", fixture.Weather)
+fmt.Println("Stalls:", fixture.Stalls)
+fmt.Println("Going:", fixture.Going)
+fmt.Println("Inspection:", fixture.Inspection)
+fmt.Println("Rail:", fixture.Rail)
+fmt.Println("Watering:", fixture.Watering)
+fmt.Println("Other:", fixture.Other)
+fmt.Println("Updated:", fixture.Updated)
 ```
 #### **Get races**
 ```Go

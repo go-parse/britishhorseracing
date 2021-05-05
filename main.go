@@ -18,7 +18,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 	"time"
 
@@ -69,7 +68,27 @@ func main() {
 	// 	fmt.Println("_______________")
 	// }
 
-	// fmt.Println(getJSONFixture(2021, 12763))
+	// fixture := getJSONFixture(2021, 12763)
+
+	// fmt.Println("ID:", fixture.ID)
+	// fmt.Println("Date:", fixture.Date)
+	// fmt.Println("MetingID:", fixture.MetingID)
+	// fmt.Println("RacecourseID:", fixture.RacecourseID)
+	// fmt.Println("Racecourse:", fixture.Racecourse)
+	// fmt.Println("Abandoned:", fixture.Abandoned)
+	// fmt.Println("Type:", fixture.Type)
+	// fmt.Println("Type:", fixture.Type)
+	// fmt.Println("Session:", fixture.Session)
+	// fmt.Println("Surface:", fixture.Surface)
+	// fmt.Println("Planning:", fixture.Planning)
+	// fmt.Println("Weather:", fixture.Weather)
+	// fmt.Println("Stalls:", fixture.Stalls)
+	// fmt.Println("Going:", fixture.Going)
+	// fmt.Println("Inspection:", fixture.Inspection)
+	// fmt.Println("Rail:", fixture.Rail)
+	// fmt.Println("Watering:", fixture.Watering)
+	// fmt.Println("Other:", fixture.Other)
+	// fmt.Println("Updated:", fixture.Updated)
 
 
 	// for _, d := range  getJSONRaces(2021, 12763) {
@@ -93,20 +112,20 @@ func main() {
 	// }
 	// https://www.britishhorseracing.com/feeds/v3/fixtures/2021/715/going
 
-	going := getJSONGoing(2021, 715)
-	
-	fmt.Println("CourseID:", going.CourseID)
-	fmt.Println("CourseID:", going.CourseID)
-	fmt.Println("Datatime:", going.Datatime)
-	fmt.Println("Type:", going.Type)
-	fmt.Println("Code:", going.Code)
-	fmt.Println("Ground:", going.Ground)
-	fmt.Println("Stick:", going.Stick)
-	fmt.Println("Rails:", going.Rails)
-	fmt.Println("Stalls:", going.Stalls)
-	fmt.Println("Weather:", going.Weather)
-	fmt.Println("Watering:", going.Watering)
-	fmt.Println("WateringStatus:", going.WateringStatus)
+	// going := getJSONGoing(2021, 715)
+
+	// fmt.Println("CourseID:", going.CourseID)
+	// fmt.Println("CourseID:", going.CourseID)
+	// fmt.Println("Datatime:", going.Datatime)
+	// fmt.Println("Type:", going.Type)
+	// fmt.Println("Code:", going.Code)
+	// fmt.Println("Ground:", going.Ground)
+	// fmt.Println("Stick:", going.Stick)
+	// fmt.Println("Rails:", going.Rails)
+	// fmt.Println("Stalls:", going.Stalls)
+	// fmt.Println("Weather:", going.Weather)
+	// fmt.Println("Watering:", going.Watering)
+	// fmt.Println("WateringStatus:", going.WateringStatus)
 
 	// from := time.Now().UTC().AddDate(-2, 0, 0)
 

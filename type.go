@@ -30,7 +30,7 @@ type Racecourse struct {
 type Fixture struct {
 	ID int `json:"ID"`
 	Year int `json:"YEAR"`
-	Date string `json:"DATE"`
+	Date time.Time `json:"DATE"`
 	MetingID int `json:"METING_ID"`
 	RacecourseID int `json:"RACECOURSE_ID"`
 	Racecourse string `json:"RACECOURSE"`
