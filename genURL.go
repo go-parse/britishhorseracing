@@ -85,6 +85,18 @@ func genURLGoing(year, fixtureID int) url.URL {
 
 	return u
 }
+func genURLOfficials(year, fixtureID int) url.URL {
+
+	u := genURLFixture(year, fixtureID)
+
+	u.Path = path.Join(u.Path, "officials")
+
+	q := u.Query()
+
+	u.RawQuery = q.Encode()
+
+	return u
+}
 
 func genURLRace(year, raceID int) url.URL {
 
