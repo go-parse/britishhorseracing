@@ -188,39 +188,35 @@ func main() {
 	// 	fmt.Println("_______________")
 	// }
 
-	nonrunners := getJSONNonrunners(2021, 38656)
+	// nonrunners := getJSONNonrunners(2021, 38656)
 
-	fmt.Println("Title:", nonrunners.Title)
-	fmt.Println("Datatime:", nonrunners.Datatime)
+	// fmt.Println("Title:", nonrunners.Title)
+	// fmt.Println("Datatime:", nonrunners.Datatime)
 
-	for _, d := range nonrunners.NR {
-		fmt.Println("Horse:", d.Horse)
-		fmt.Println("Reason:", d.Reason)
-		fmt.Println("Datatime:", d.Datatime)
-		fmt.Println("_______________")
-	}
+	// for _, d := range nonrunners.NR {
+	// 	fmt.Println("Horse:", d.Horse)
+	// 	fmt.Println("Reason:", d.Reason)
+	// 	fmt.Println("Datatime:", d.Datatime)
+	// 	fmt.Println("_______________")
+	// }
 
 	// from := time.Now().UTC().AddDate(-2, 0, 0)
 
 	// to := from.AddDate(0, 0, 10)
 
-	// fields := make([]string, 0)
-	// fields = append(fields, "courseId")
-	// fields = append(fields, "fixtureId")
-	// fields = append(fields, "meetingId")
-	// fields = append(fields, "fixtureDate")
-	// fields = append(fields, "firstRaceTime")
-	// fields = append(fields, "fixtureName")
-	// fields = append(fields, "fixtureSession")
-	// fields = append(fields, "bcsEvent")
-	// fields = append(fields, "fixtureType")
-	// fields = append(fields, "highlightTitle")
-	// fields = append(fields, "firstRace")
-	// fields = append(fields, "majorEvent")
-	// fields = append(fields, "distance")
-	// fields = append(fields, "courseName")
-	// fields = append(fields, "fixtureYear")
-	// fields = append(fields, "abandonedReasonCode")
+	fields := make([]string, 0)
+	fields = append(fields, "courseId")
+	fields = append(fields, "fixtureId")
+	fields = append(fields, "meetingId")
+	fields = append(fields, "fixtureDate")
+	fields = append(fields, "firstRaceTime")
+	fields = append(fields, "fixtureSession")
+	fields = append(fields, "bcsEvent")
+	fields = append(fields, "fixtureType")
+	fields = append(fields, "highlightTitle")
+	fields = append(fields, "firstRace")
+	fields = append(fields, "courseName")
+	fields = append(fields, "abandonedReasonCode")
 
 	// for _, d := range getJSONOfficials(2021, 12763) {
 
@@ -244,7 +240,7 @@ func main() {
 	// entries := genURLEntries(2021, 45563)
 	// nonrunners := genURLNonrunners(2021, 45563)
 	// fixturesFromTo := genURLFixturesFromTo(1, 3, from, to, true, fields)
-	// fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
+	fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
 
 	// fmt.Println(racecourses.String())
 	// fmt.Println(fixtures.String())
@@ -256,6 +252,24 @@ func main() {
 	// fmt.Println(nonrunners.String())
 	// fmt.Println(fixturesFromTo.String())
 	// fmt.Println(fixturesForMonth.String())
+
+	
+	for _, d := range getJSONFixtures(fixturesForMonth){
+		fmt.Println("ID:", d.ID)
+		fmt.Println("MetingID:", d.MetingID)
+		fmt.Println("RacecourseID:", d.RacecourseID)
+		fmt.Println("Racecourse:", d.Racecourse)
+		fmt.Println("Date:", d.Date)
+		fmt.Println("Bcs:", d.Bcs)
+		fmt.Println("Abandoned:", d.Abandoned)
+		fmt.Println("Region:", d.Region)
+		fmt.Println("Type:", d.Type)
+		fmt.Println("RacecardAvailable:", d.RacecardAvailable)
+		fmt.Println("EntriesAvailable:", d.EntriesAvailable)
+		fmt.Println("BlackTypeRaces:", d.BlackTypeRaces)
+		fmt.Println("ResultsAvailable:", d.ResultsAvailable)
+		fmt.Println("_______________")
+	}
 
 }
 

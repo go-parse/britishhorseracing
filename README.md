@@ -190,3 +190,38 @@ for _, d := range nonrunners.NR {
 	fmt.Println("_______________")
 }
 ```
+#### **Get fixtures**
+```Go
+fields := make([]string, 0)
+fields = append(fields, "courseId")
+fields = append(fields, "fixtureId")
+fields = append(fields, "meetingId")
+fields = append(fields, "fixtureDate")
+fields = append(fields, "firstRaceTime")
+fields = append(fields, "fixtureSession")
+fields = append(fields, "bcsEvent")
+fields = append(fields, "fixtureType")
+fields = append(fields, "highlightTitle")
+fields = append(fields, "firstRace")
+fields = append(fields, "courseName")
+fields = append(fields, "abandonedReasonCode")
+
+fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
+
+for _, d := range getJSONFixtures(fixturesForMonth){
+	fmt.Println("ID:", d.ID)
+	fmt.Println("MetingID:", d.MetingID)
+	fmt.Println("RacecourseID:", d.RacecourseID)
+	fmt.Println("Racecourse:", d.Racecourse)
+	fmt.Println("Date:", d.Date)
+	fmt.Println("Bcs:", d.Bcs)
+	fmt.Println("Abandoned:", d.Abandoned)
+	fmt.Println("Region:", d.Region)
+	fmt.Println("Type:", d.Type)
+	fmt.Println("RacecardAvailable:", d.RacecardAvailable)
+	fmt.Println("EntriesAvailable:", d.EntriesAvailable)
+	fmt.Println("BlackTypeRaces:", d.BlackTypeRaces)
+	fmt.Println("ResultsAvailable:", d.ResultsAvailable)
+	fmt.Println("_______________")
+}
+```

@@ -40,7 +40,9 @@ type Fixture struct {
 	MetingID int `json:"METING_ID"`
 	RacecourseID int `json:"RACECOURSE_ID"`
 	Racecourse string `json:"RACECOURSE"`
+	Bcs bool `json:"BCS"`
 	Abandoned bool `json:"ABANDONED"`
+	Region string `json:"REGION"`
 	Type string `json:"TYPE"`
 	Session string `json:"SESSION"`
 	Surface string `json:"SURFACE"`
@@ -53,6 +55,10 @@ type Fixture struct {
 	Watering TU `json:"WATERING"`
 	Other TU `json:"OTHER"`
 	Updated time.Time `json:"UPDATED"`
+	RacecardAvailable bool `json:"RACECARD_AVAILABLE"`
+	EntriesAvailable bool `json:"ENTRIES_AVAILABLE"`
+	BlackTypeRaces bool `json:"BLACK_TYPERACES"`
+	ResultsAvailable bool `json:"RESULTS_AVAILABLE"`
 }
 
 type Race struct {

@@ -578,3 +578,51 @@ func getJSONNonrunners(year, fixtureID int) Nonrunners {
 	
 	return r
 }
+
+func getJSONFixtures(u url.URL) []Fixture {
+
+	r := make([]Fixture, 0)
+
+	d := struct {
+		Data []struct{
+			FixtureId int
+			MeetingId int
+			CourseId int
+            CourseName string
+            FixtureDate string
+            BcsEvent int
+            AbandonedReasonCode int
+            Region string
+            FixtureType string
+            FixtureSession string
+            RacecardAvailable int
+            EntriesAvailable int
+            BlackTypeRaces int
+            ResultsAvailable bool
+		}
+	} {}
+
+	getJSON(u, &d)
+
+	for _, d := range d.Data {
+
+		r = append(r, Fixture {
+			ID: d.FixtureId,
+			MetingID: d.MeetingId,
+			RacecourseID: d.CourseId,
+			Racecourse: d.CourseName,
+			Date: dataParse(d.FixtureDate),
+			Bcs: d.BcsEvent > 0,
+			Abandoned: d.AbandonedReasonCode > 0,
+			Region: d.Region,
+			Type: d.FixtureType,
+			Session: d.FixtureSession,
+			RacecardAvailable: d.RacecardAvailable > 0,
+			EntriesAvailable: d.EntriesAvailable > 0,
+			BlackTypeRaces: d.BlackTypeRaces > 0,
+			ResultsAvailable: d.ResultsAvailable,
+		})
+	}
+
+	return r
+}
