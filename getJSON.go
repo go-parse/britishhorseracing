@@ -384,6 +384,7 @@ func getJSONOfficials(year, fixtureID int) [] Official {
 
 	return r
 }
+
 func getJSONRace(year, fixtureID int) Race {
 
 	var r Race
@@ -425,18 +426,10 @@ func getJSONRace(year, fixtureID int) Race {
 
 	getJSON(genURLRace(year, fixtureID), &d)
 
-	// for _, d := range d.Data {
-
-	// 	r = append(r, Official{
-	// 		Category: d.Category,
-	// 		Officials: d.Officials,
-	// 	})
-	// }
-
 	if len(d.Data) > 0 {
 		
 		number := -1
-		if i, e := strconv.ParseInt( d.Data[0].RaceNumber, 10, 64); e == nil {
+		if i, e := strconv.ParseInt(d.Data[0].RaceNumber, 10, 64); e == nil {
 			number = int(i)
 		}
 
@@ -468,6 +461,83 @@ func getJSONRace(year, fixtureID int) Race {
 			MinimumWeight: d.Data[0].RaceCriteriaMinimumWeight,
 			WeightsRaised: d.Data[0].RaceCriteriaWeightsRaised,
 		}
+	}
+
+	return r
+}
+
+func getJSONEntries(year, fixtureID int) []Entry {
+
+	r := make([]Entry, 0)
+
+	d := struct {
+		Data []struct{
+			RaceId int
+            AnimalId int
+            YearOfRace int
+            DivisionSequence int
+            RacehorseName string
+            AgeYears int
+            SexType string
+            ClothNumber int
+            DrawnStall int
+            BhaRating int
+            WeightValue string
+			WeightText string
+            PenaltyValue int
+            NonRunnerDeclaredReason string
+            nonRunnerDeclaredDate string
+            nonRunnerDeclaredTime string
+            Status string
+            JockeyId int
+            JockeyName string
+			TrainerId int
+            TrainerName string
+			OwnerId int
+            OwnerName string
+            WeightsJockeyClaiming int
+            HeadGearAbbreviation string
+            WindSurgeryFirstRun int
+            WbSilkCode string
+            WbSilkDescription string
+		}
+	} {}
+
+	getJSON(genURLEntries(year, fixtureID), &d)
+
+	for _, d := range d.Data {
+
+		silkCode := -1
+		if i, e := strconv.ParseInt(d.WbSilkCode, 10, 64); e == nil {
+			silkCode = int(i)
+		}
+
+		r = append(r, Entry {
+			RaceID: d.RaceId,
+			Horse: Participant{Name: d.RacehorseName, ID: d.AnimalId},
+			Jockey: Participant{Name: d.JockeyName, ID: d.JockeyId},
+			Trainer: Participant{Name: d.TrainerName, ID: d.TrainerId},
+			Owner: Participant{Name: d.OwnerName, ID: d.OwnerId},
+			Division: d.DivisionSequence,
+			Age: d.AgeYears,
+			Sex: d.SexType,
+			Number: d.ClothNumber,
+			Drawn: d.DrawnStall,
+			Rating: d.BhaRating,
+			Weight: d.WeightValue,
+			Penalty: d.PenaltyValue,
+			Nonrunner: Nonrunner{
+				Horse: d.RacehorseName,
+				Reason: d.NonRunnerDeclaredReason,
+				Datatime: datatimeParse(d.nonRunnerDeclaredDate+" "+d.nonRunnerDeclaredTime),
+			},
+			Status: d.Status,
+			JockeyClaim: d.WeightsJockeyClaiming,
+			HeadGear: d.HeadGearAbbreviation,
+			WindSurgeryFirstRun: d.WindSurgeryFirstRun,
+			SilkCode: silkCode,
+			SilkDescription: d.WbSilkDescription,
+		})
 	}
 
 	return r

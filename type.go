@@ -6,10 +6,17 @@ type TU struct {
 	T string `json:"T"` // Text
 	U time.Time `json:"U"` // Updated 
 }
+
 type FU struct {
 	F float64 `json:"T"` // Float
 	U time.Time `json:"U"` // Updated 
 }
+
+type Participant struct {
+	Name string `json:"NAME"`
+	ID int `json:"ID"` 
+}
+
 type GEO  struct {
 	Latitude float64 `json:"LATITUDE"` 
 	Longitude float64 `json:"LONGITUDE"`
@@ -95,4 +102,33 @@ type Going struct {
 type Official struct {
 	Category string `json:"CATEGORY"`
 	Officials []string `json:"OFFICIALS"`
+}
+
+type Nonrunner struct {
+	Horse string `json:"HORSE"`
+	Reason string `json:"REASON"`
+	Datatime time.Time `json:"DATATIME"`
+}
+
+type Entry struct {
+	RaceID int `json:"RACE_ID"`
+	Horse Participant `json:"HORSE"`
+	Jockey Participant `json:"JOCKEY"`
+	Trainer Participant `json:"TRAINER"`
+	Owner Participant `json:"OWNER"`
+	Division int `json:"DIVISION"`
+	Age int `json:"AGE"`
+	Sex string `json:"SEX"`
+	Number int `json:"Number"`
+	Drawn int `json:"Drawn"`
+	Rating int `json:"RATING"`
+	Weight string `json:"Weight"`
+	Penalty int `json:"Penalty"`
+	Nonrunner Nonrunner `json:"NON_RUNNER"`
+	Status string `json:"STATUS"`
+	JockeyClaim int `json:"JOCKEY_CLAIM"`
+	HeadGear string `json:"HEAD_GEAR"`
+	WindSurgeryFirstRun int `json:"WIND_SURGERY_FIRST_RUN"`
+	SilkCode int `json:"SILK_CODE"`
+	SilkDescription string `json:"SILK_DESCRIPTION"`
 }

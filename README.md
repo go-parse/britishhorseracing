@@ -138,3 +138,38 @@ fmt.Println("MaxRunners:", race.MaxRunners)
 fmt.Println("MinimumWeight:", race.MinimumWeight)
 fmt.Println("WeightsRaised:", race.WeightsRaised)
 ```
+#### **Get entries**
+```Go
+year := 2021
+fixtureID := 38656
+
+for _, d := range getJSONEntries(2021, 38656) {
+	fmt.Println("RaceID:",d.RaceID)
+	fmt.Println("Horse ID:",d.Horse.ID)
+	fmt.Println("Horse Name:",d.Horse.Name)
+	fmt.Println("Jockey ID:",d.Jockey.ID)
+	fmt.Println("Jockey Name:",d.Jockey.Name)
+	fmt.Println("Trainer ID:",d.Trainer.ID)
+	fmt.Println("Trainer Name:",d.Trainer.Name)
+	fmt.Println("Owner ID:",d.Owner.ID)
+	fmt.Println("Owner Name:",d.Owner.Name)
+	fmt.Println("Division:",d.Division)
+	fmt.Println("Age:",d.Age)
+	fmt.Println("Sex:",d.Sex)
+	fmt.Println("Number:",d.Number)
+	fmt.Println("Drawn:",d.Drawn)
+	fmt.Println("Rating:",d.Rating)
+	fmt.Println("Weight:",d.Weight)
+	fmt.Println("Penalty:",d.Penalty)
+	fmt.Println("Nonrunner Horse:",d.Nonrunner.Horse)
+	fmt.Println("Nonrunner Reason:",d.Nonrunner.Reason)
+	fmt.Println("Nonrunner Datatime:",d.Nonrunner.Datatime)
+	fmt.Println("Status:",d.Status)
+	fmt.Println("JockeyClaim:",d.JockeyClaim)
+	fmt.Println("HeadGear:",d.HeadGear)
+	fmt.Println("WindSurgeryFirstRun:",d.WindSurgeryFirstRun)
+	fmt.Println("SilkCode:",d.SilkCode)
+	fmt.Println("SilkDescription:",d.SilkDescription)
+	fmt.Println("_______________")
+}
+```
