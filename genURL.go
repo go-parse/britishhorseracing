@@ -20,7 +20,6 @@ import (
 	"net/url"
 	"path"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -85,6 +84,7 @@ func genURLGoing(year, fixtureID int) url.URL {
 
 	return u
 }
+
 func genURLOfficials(year, fixtureID int) url.URL {
 
 	u := genURLFixture(year, fixtureID)
@@ -141,17 +141,13 @@ func genURLNonrunners(year, raceID int) url.URL {
 	return u
 }
 
-func genURLFixturesFromTo(page, per int, from, to time.Time, isAvailable bool, fields []string) url.URL {
+func genURLFixturesFromTo(page, per int, from, to time.Time, isAvailable bool) url.URL {
 
 	u := genURL()
 
 	u.Path = path.Join(u.Path, "fixtures")
 
 	q := u.Query()
-
-	if len(fields) > 0 {
-		q.Set("fields", strings.Join(fields, ","))
-	}
 
 	q.Set("page", strconv.Itoa(page))
 	q.Set("per_page", strconv.Itoa(per))
@@ -164,17 +160,13 @@ func genURLFixturesFromTo(page, per int, from, to time.Time, isAvailable bool, f
 	return u
 }
 
-func genURLFixturesForMonth(page, per, year, month int, isAvailable bool, fields []string) url.URL {
+func genURLFixturesForMonth(page, per, year, month int, isAvailable bool) url.URL {
 
 	u := genURL()
 
 	u.Path = path.Join(u.Path, "fixtures")
 
 	q := u.Query()
-
-	if len(fields) > 0 {
-		q.Set("fields", strings.Join(fields, ","))
-	}
 
 	q.Set("page", strconv.Itoa(page))
 	q.Set("per_page", strconv.Itoa(per))

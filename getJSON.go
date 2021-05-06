@@ -583,6 +583,25 @@ func getJSONFixtures(u url.URL) []Fixture {
 
 	r := make([]Fixture, 0)
 
+	q := u.Query()
+
+	fields := make([]string, 0)
+	fields = append(fields, "courseId")
+	fields = append(fields, "fixtureId")
+	fields = append(fields, "meetingId")
+	fields = append(fields, "fixtureDate")
+	fields = append(fields, "firstRaceTime")
+	fields = append(fields, "fixtureSession")
+	fields = append(fields, "bcsEvent")
+	fields = append(fields, "fixtureType")
+	fields = append(fields, "highlightTitle")
+	fields = append(fields, "firstRace")
+	fields = append(fields, "courseName")
+	fields = append(fields, "abandonedReasonCode")
+
+	q.Set("fields", strings.Join(fields, ","))
+
+
 	d := struct {
 		Data []struct{
 			FixtureId int
@@ -625,4 +644,14 @@ func getJSONFixtures(u url.URL) []Fixture {
 	}
 
 	return r
+}
+
+func getJSONFixturesFromTo(page, per int, from, to time.Time, isAvailable bool) []Fixture {
+
+	return getJSONFixtures(genURLFixturesFromTo(page, per, from, to, isAvailable))
+}
+
+func getJSONFixturesForMonth(page, per, year, month int, isAvailable bool) []Fixture {
+
+	return getJSONFixtures(genURLFixturesForMonth(page, per, year, month, isAvailable))
 }

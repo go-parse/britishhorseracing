@@ -192,23 +192,10 @@ for _, d := range nonrunners.NR {
 ```
 #### **Get fixtures**
 ```Go
-fields := make([]string, 0)
-fields = append(fields, "courseId")
-fields = append(fields, "fixtureId")
-fields = append(fields, "meetingId")
-fields = append(fields, "fixtureDate")
-fields = append(fields, "firstRaceTime")
-fields = append(fields, "fixtureSession")
-fields = append(fields, "bcsEvent")
-fields = append(fields, "fixtureType")
-fields = append(fields, "highlightTitle")
-fields = append(fields, "firstRace")
-fields = append(fields, "courseName")
-fields = append(fields, "abandonedReasonCode")
 
-fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
+u := genURLFixturesForMonth(1, 3, 2021, 5, true)
 
-for _, d := range getJSONFixtures(fixturesForMonth){
+for _, d := range getJSONFixtures(u){
 	fmt.Println("ID:", d.ID)
 	fmt.Println("MetingID:", d.MetingID)
 	fmt.Println("RacecourseID:", d.RacecourseID)

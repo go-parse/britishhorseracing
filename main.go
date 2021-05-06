@@ -18,7 +18,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 	"time"
 
@@ -204,19 +203,19 @@ func main() {
 
 	// to := from.AddDate(0, 0, 10)
 
-	fields := make([]string, 0)
-	fields = append(fields, "courseId")
-	fields = append(fields, "fixtureId")
-	fields = append(fields, "meetingId")
-	fields = append(fields, "fixtureDate")
-	fields = append(fields, "firstRaceTime")
-	fields = append(fields, "fixtureSession")
-	fields = append(fields, "bcsEvent")
-	fields = append(fields, "fixtureType")
-	fields = append(fields, "highlightTitle")
-	fields = append(fields, "firstRace")
-	fields = append(fields, "courseName")
-	fields = append(fields, "abandonedReasonCode")
+	// fields := make([]string, 0)
+	// fields = append(fields, "courseId")
+	// fields = append(fields, "fixtureId")
+	// fields = append(fields, "meetingId")
+	// fields = append(fields, "fixtureDate")
+	// fields = append(fields, "firstRaceTime")
+	// fields = append(fields, "fixtureSession")
+	// fields = append(fields, "bcsEvent")
+	// fields = append(fields, "fixtureType")
+	// fields = append(fields, "highlightTitle")
+	// fields = append(fields, "firstRace")
+	// fields = append(fields, "courseName")
+	// fields = append(fields, "abandonedReasonCode")
 
 	// for _, d := range getJSONOfficials(2021, 12763) {
 
@@ -240,7 +239,7 @@ func main() {
 	// entries := genURLEntries(2021, 45563)
 	// nonrunners := genURLNonrunners(2021, 45563)
 	// fixturesFromTo := genURLFixturesFromTo(1, 3, from, to, true, fields)
-	fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
+	// fixturesForMonth := genURLFixturesForMonth(1, 3, 2021, 5, true, fields)
 
 	// fmt.Println(racecourses.String())
 	// fmt.Println(fixtures.String())
@@ -254,22 +253,22 @@ func main() {
 	// fmt.Println(fixturesForMonth.String())
 
 	
-	for _, d := range getJSONFixtures(fixturesForMonth){
-		fmt.Println("ID:", d.ID)
-		fmt.Println("MetingID:", d.MetingID)
-		fmt.Println("RacecourseID:", d.RacecourseID)
-		fmt.Println("Racecourse:", d.Racecourse)
-		fmt.Println("Date:", d.Date)
-		fmt.Println("Bcs:", d.Bcs)
-		fmt.Println("Abandoned:", d.Abandoned)
-		fmt.Println("Region:", d.Region)
-		fmt.Println("Type:", d.Type)
-		fmt.Println("RacecardAvailable:", d.RacecardAvailable)
-		fmt.Println("EntriesAvailable:", d.EntriesAvailable)
-		fmt.Println("BlackTypeRaces:", d.BlackTypeRaces)
-		fmt.Println("ResultsAvailable:", d.ResultsAvailable)
-		fmt.Println("_______________")
-	}
+	// for _, d := range getJSONFixtures(fixturesForMonth){
+	// 	fmt.Println("ID:", d.ID)
+	// 	fmt.Println("MetingID:", d.MetingID)
+	// 	fmt.Println("RacecourseID:", d.RacecourseID)
+	// 	fmt.Println("Racecourse:", d.Racecourse)
+	// 	fmt.Println("Date:", d.Date)
+	// 	fmt.Println("Bcs:", d.Bcs)
+	// 	fmt.Println("Abandoned:", d.Abandoned)
+	// 	fmt.Println("Region:", d.Region)
+	// 	fmt.Println("Type:", d.Type)
+	// 	fmt.Println("RacecardAvailable:", d.RacecardAvailable)
+	// 	fmt.Println("EntriesAvailable:", d.EntriesAvailable)
+	// 	fmt.Println("BlackTypeRaces:", d.BlackTypeRaces)
+	// 	fmt.Println("ResultsAvailable:", d.ResultsAvailable)
+	// 	fmt.Println("_______________")
+	// }
 
 }
 
