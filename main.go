@@ -18,6 +18,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"strings"
 	"time"
 
@@ -148,6 +149,17 @@ func main() {
 	// fields = append(fields, "courseName")
 	// fields = append(fields, "fixtureYear")
 	// fields = append(fields, "abandonedReasonCode")
+
+	for _, d := range getJSONOfficials(2021, 12763) {
+
+		fmt.Println("Category:", d.Category)
+
+		for _, o := range d.Officials {
+			fmt.Println(o)
+		}
+		
+		fmt.Println("_______________")
+	}
 
 	// racecourses := genURLRacecourses()
 	// fixtures := genURLFixture(2021, 478)

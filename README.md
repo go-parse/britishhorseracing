@@ -44,7 +44,6 @@ fmt.Println("Updated:", fixture.Updated)
 ```
 #### **Get races**
 ```Go
-
 year := 2021
 fixtureID := 12763
 
@@ -70,7 +69,6 @@ for _, d := range  getJSONRaces(year, fixtureID) {
 
 #### **Get going**
 ```Go
-
 year := 2021
 fixtureID := 12763
 
@@ -88,4 +86,21 @@ fmt.Println("Stalls:", going.Stalls)
 fmt.Println("Weather:", going.Weather)
 fmt.Println("Watering:", going.Watering)
 fmt.Println("WateringStatus:", going.WateringStatus)
+```
+
+#### **Get officials**
+```Go
+year := 2021
+fixtureID := 12763
+
+for _, d := range getJSONOfficials(2021, 12763) {
+
+	fmt.Println("Category:", d.Category)
+
+	for _, o := range d.Officials {
+		fmt.Println(o)
+	}
+		
+	fmt.Println("_______________")
+}
 ```

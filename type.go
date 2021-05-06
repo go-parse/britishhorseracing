@@ -29,7 +29,6 @@ type Racecourse struct {
 
 type Fixture struct {
 	ID int `json:"ID"`
-	Year int `json:"YEAR"`
 	Date time.Time `json:"DATE"`
 	MetingID int `json:"METING_ID"`
 	RacecourseID int `json:"RACECOURSE_ID"`
@@ -79,4 +78,9 @@ type Going struct {
 	Weather string `json:"WEATHER"`
 	Watering string `json:"WATERING"`
 	WateringStatus string `json:"WATERING_STATUS"`
+}
+
+type Official struct {
+	Category string `json:"CATEGORY"`
+	Officials []string `json:"OFFICIALS"`
 }

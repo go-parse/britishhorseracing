@@ -360,3 +360,27 @@ func getJSONGoing(year, fixtureID int) Going {
 		WateringStatus: d.Data.Conditions.WateringStatus,
 	}
 }
+
+func getJSONOfficials(year, fixtureID int) [] Official {
+
+	r := make([]Official, 0)
+
+	d := struct {
+		Data []struct{
+            Category string
+            Officials []string
+		}
+	} {}
+
+	getJSON(genURLOfficials(year, fixtureID), &d)
+
+	for _, d := range d.Data {
+
+		r = append(r, Official{
+			Category: d.Category,
+			Officials: d.Officials,
+		})
+	}
+
+	return r
+}
