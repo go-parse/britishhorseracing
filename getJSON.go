@@ -384,3 +384,91 @@ func getJSONOfficials(year, fixtureID int) [] Official {
 
 	return r
 }
+func getJSONRace(year, fixtureID int) Race {
+
+	var r Race
+
+	d := struct {
+		Data []struct{
+			RaceId int
+            FixtureId int
+            RaceNumber string
+            YearOfRace int
+            DivisionSequence int
+            RaceDate string
+            RaceTime string
+			RaceName string
+            AgeLimit string
+            SexLimit string
+            PrizeAmount int
+            PrizeCurrency string
+            DistanceValue int
+            DistanceChange int
+            RatingBand string
+            RaceCriteriaRaceType string
+            AbandonedReasonCode int
+            BlackTypeRace int
+            Plus10 bool
+            RacingUK int
+            RiderType string
+            AnimalType string
+            WinTime string
+            Runners int
+            MaxRunners int
+            ResultsAvailable int
+            RacecardAvailable int
+            RaceCriteriaMinimumWeight int
+            RaceCriteriaWeightsRaised int
+            Challenger bool
+		}
+	} {}
+
+	getJSON(genURLRace(year, fixtureID), &d)
+
+	// for _, d := range d.Data {
+
+	// 	r = append(r, Official{
+	// 		Category: d.Category,
+	// 		Officials: d.Officials,
+	// 	})
+	// }
+
+	if len(d.Data) > 0 {
+		
+		number := -1
+		if i, e := strconv.ParseInt( d.Data[0].RaceNumber, 10, 64); e == nil {
+			number = int(i)
+		}
+
+		r = Race{
+			ID: d.Data[0].RaceId,
+			FixtureID: d.Data[0].FixtureId,
+			Number: number,
+			Division: d.Data[0].DivisionSequence,
+			Name: d.Data[0].RaceName,
+			Age: d.Data[0].AgeLimit,
+			Sex: d.Data[0].SexLimit,
+			Prize: d.Data[0].PrizeAmount,
+			Currency: d.Data[0].PrizeCurrency,
+			Band: d.Data[0].RatingBand,
+			Datatime: datatimeParse(d.Data[0].RaceDate+" "+d.Data[0].RaceTime),
+			Distance: d.Data[0].DistanceValue,
+			Change: d.Data[0].DistanceChange,
+			Type: d.Data[0].RaceCriteriaRaceType,
+			Abandoned: d.Data[0].AbandonedReasonCode > 0,
+			Black: d.Data[0].BlackTypeRace > 0,
+			Plus10: d.Data[0].Plus10,
+			RacingUK: d.Data[0].RacingUK > 0,
+			Challenger: d.Data[0].Challenger,
+			Rider: d.Data[0].RiderType,
+			Animal: d.Data[0].AnimalType,
+			WinTime: d.Data[0].WinTime,
+			Runners: d.Data[0].Runners,
+			MaxRunners: d.Data[0].MaxRunners,
+			MinimumWeight: d.Data[0].RaceCriteriaMinimumWeight,
+			WeightsRaised: d.Data[0].RaceCriteriaWeightsRaised,
+		}
+	}
+
+	return r
+}

@@ -128,6 +128,35 @@ func main() {
 	// fmt.Println("Watering:", going.Watering)
 	// fmt.Println("WateringStatus:", going.WateringStatus)
 
+	race := getJSONRace(2021, 21301)
+	
+	fmt.Println("ID:", race.ID)
+	fmt.Println("FixtureID:", race.FixtureID)
+	fmt.Println("Number:", race.Number)
+	fmt.Println("Division:", race.Division)
+	fmt.Println("Name:", race.Name)
+	fmt.Println("Age:", race.Age)
+	fmt.Println("Sex:", race.Sex)
+	fmt.Println("Prize:", race.Prize)
+	fmt.Println("Currency:", race.Currency)
+	fmt.Println("Band:", race.Band)
+	fmt.Println("Datatime:", race.Datatime)
+	fmt.Println("Distance:", race.Distance)
+	fmt.Println("Change:", race.Change)
+	fmt.Println("Type:", race.Type)
+	fmt.Println("Abandoned:", race.Abandoned)
+	fmt.Println("Black:", race.Black)
+	fmt.Println("Plus10:", race.Plus10)
+	fmt.Println("RacingUK:", race.RacingUK)
+	fmt.Println("Challenger:", race.Challenger)
+	fmt.Println("Rider:", race.Rider)
+	fmt.Println("Animal:", race.Animal)
+	fmt.Println("WinTime:", race.WinTime)
+	fmt.Println("Runners:", race.Runners)
+	fmt.Println("MaxRunners:", race.MaxRunners)
+	fmt.Println("MinimumWeight:", race.MinimumWeight)
+	fmt.Println("WeightsRaised:", race.WeightsRaised)
+
 	// from := time.Now().UTC().AddDate(-2, 0, 0)
 
 	// to := from.AddDate(0, 0, 10)
@@ -150,16 +179,18 @@ func main() {
 	// fields = append(fields, "fixtureYear")
 	// fields = append(fields, "abandonedReasonCode")
 
-	for _, d := range getJSONOfficials(2021, 12763) {
+	// for _, d := range getJSONOfficials(2021, 12763) {
 
-		fmt.Println("Category:", d.Category)
+	// 	fmt.Println("Category:", d.Category)
 
-		for _, o := range d.Officials {
-			fmt.Println(o)
-		}
+	// 	for _, o := range d.Officials {
+	// 		fmt.Println(o)
+	// 	}
 		
-		fmt.Println("_______________")
-	}
+	// 	fmt.Println("_______________")
+	// }
+
+	// getJSONRace(2021, 12763)
 
 	// racecourses := genURLRacecourses()
 	// fixtures := genURLFixture(2021, 478)

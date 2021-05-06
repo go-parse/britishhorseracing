@@ -104,3 +104,37 @@ for _, d := range getJSONOfficials(2021, 12763) {
 	fmt.Println("_______________")
 }
 ```
+#### **Get race**
+```Go
+year := 2021
+fixtureID := 12763
+
+race := getJSONRace(2021, 21301)
+
+fmt.Println("ID:", race.ID)
+fmt.Println("FixtureID:", race.FixtureID)
+fmt.Println("Number:", race.Number)
+fmt.Println("Division:", race.Division)
+fmt.Println("Name:", race.Name)
+fmt.Println("Age:", race.Age)
+fmt.Println("Sex:", race.Sex)
+fmt.Println("Prize:", race.Prize)
+fmt.Println("Currency:", race.Currency)
+fmt.Println("Band:", race.Band)
+fmt.Println("Datatime:", race.Datatime)
+fmt.Println("Distance:", race.Distance)
+fmt.Println("Change:", race.Change)
+fmt.Println("Type:", race.Type)
+fmt.Println("Abandoned:", race.Abandoned)
+fmt.Println("Black:", race.Black)
+fmt.Println("Plus10:", race.Plus10)
+fmt.Println("RacingUK:", race.RacingUK)
+fmt.Println("Challenger:", race.Challenger)
+fmt.Println("Rider:", race.Rider)
+fmt.Println("Animal:", race.Animal)
+fmt.Println("WinTime:", race.WinTime)
+fmt.Println("Runners:", race.Runners)
+fmt.Println("MaxRunners:", race.MaxRunners)
+fmt.Println("MinimumWeight:", race.MinimumWeight)
+fmt.Println("WeightsRaised:", race.WeightsRaised)
+```

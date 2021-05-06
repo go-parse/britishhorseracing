@@ -50,10 +50,13 @@ type Fixture struct {
 
 type Race struct {
 	ID int `json:"ID"`
+	FixtureID int `json:"FIXTURE_ID"`
+	Number int `json:"NUMBER"`
 	Division int `json:"DIVISION"`
 	Datatime time.Time `json:"DATATIME"`
 	Name string `json:"NAME"`
 	Age string `json:"AGE"`
+	Sex string `json:"SEX"`
 	Prize int `json:"PRIZE"`
 	Currency string `json:"CURRENCY"`
 	Class int `json:"CLASS"`
@@ -64,6 +67,15 @@ type Race struct {
 	Abandoned bool `json:"ABANDONED"`
 	Black bool `json:"BLACK"`
 	Plus10 bool `json:"PLUS10"`
+	RacingUK bool `json:"RACING_UK"`
+	Challenger bool `json:"CHALLENGER"`
+	Rider string `json:"RIDER"`
+	Animal string `json:"ANIMAL"`
+	WinTime string `json:"WIN_TIME"`
+	Runners int `json:"RUNNERS"`
+	MaxRunners int `json:"MAX_RUNNERS"`
+	MinimumWeight int `json:"MINIMUM_WEIGHT"`
+	WeightsRaised int `json:"WEIGHTS_RAISED"`
 }
 type Going struct {
 	FixtureID int `json:"FIXTURE_ID"`
