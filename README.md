@@ -20,7 +20,7 @@ for _, d := range  getJSONRacecourses() {
 year := 2021
 fixtureID := 12763
 
-fixture := getJSONFixture(2021, 12763)
+fixture := getJSONFixture(year, fixtureID)
 
 fmt.Println("ID:", fixture.ID)
 fmt.Println("Date:", fixture.Date)
@@ -72,7 +72,7 @@ for _, d := range  getJSONRaces(year, fixtureID) {
 year := 2021
 fixtureID := 12763
 
-going := getJSONGoing(2021, 715)
+going := getJSONGoing(year, fixtureID)
 	
 fmt.Println("CourseID:", going.CourseID)
 fmt.Println("CourseID:", going.CourseID)
@@ -93,7 +93,7 @@ fmt.Println("WateringStatus:", going.WateringStatus)
 year := 2021
 fixtureID := 12763
 
-for _, d := range getJSONOfficials(2021, 12763) {
+for _, d := range getJSONOfficials(year, fixtureID) {
 
 	fmt.Println("Category:", d.Category)
 
@@ -109,7 +109,7 @@ for _, d := range getJSONOfficials(2021, 12763) {
 year := 2021
 fixtureID := 12763
 
-race := getJSONRace(2021, 21301)
+race := getJSONRace(year, fixtureID)
 
 fmt.Println("ID:", race.ID)
 fmt.Println("FixtureID:", race.FixtureID)
@@ -143,7 +143,7 @@ fmt.Println("WeightsRaised:", race.WeightsRaised)
 year := 2021
 fixtureID := 38656
 
-for _, d := range getJSONEntries(2021, 38656) {
+for _, d := range getJSONEntries(year, fixtureID) {
 	fmt.Println("RaceID:",d.RaceID)
 	fmt.Println("Horse ID:",d.Horse.ID)
 	fmt.Println("Horse Name:",d.Horse.Name)
@@ -170,6 +170,23 @@ for _, d := range getJSONEntries(2021, 38656) {
 	fmt.Println("WindSurgeryFirstRun:",d.WindSurgeryFirstRun)
 	fmt.Println("SilkCode:",d.SilkCode)
 	fmt.Println("SilkDescription:",d.SilkDescription)
+	fmt.Println("_______________")
+}
+```
+#### **Get nonrunners**
+```Go
+year := 2021
+fixtureID := 38656
+
+nonrunners := getJSONNonrunners(year, fixtureID)
+
+fmt.Println("Title:", nonrunners.Title)
+fmt.Println("Datatime:", nonrunners.Datatime)
+
+for _, d := range nonrunners.NR {
+	fmt.Println("Horse:", d.Horse)
+	fmt.Println("Reason:", d.Reason)
+	fmt.Println("Datatime:", d.Datatime)
 	fmt.Println("_______________")
 }
 ```

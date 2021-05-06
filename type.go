@@ -110,6 +110,12 @@ type Nonrunner struct {
 	Datatime time.Time `json:"DATATIME"`
 }
 
+type Nonrunners struct {
+	Title string `json:"Title"`
+	Datatime time.Time `json:"DATATIME"`
+	NR []Nonrunner `json:"NR"`
+}
+
 type Entry struct {
 	RaceID int `json:"RACE_ID"`
 	Horse Participant `json:"HORSE"`

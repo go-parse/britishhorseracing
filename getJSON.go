@@ -303,13 +303,13 @@ func getJSONGoing(year, fixtureID int) Going {
 			}
 
 			ConditionsHistory []struct {
-                FixtureId int
-                CourseId int
-                FixtureYear int
-                FixtureDate string
-                FixtureType string
-                TrackType string
-                FixtureSession string
+				FixtureId int
+				CourseId int
+				FixtureYear int
+				FixtureDate string
+				FixtureType string
+				TrackType string
+				FixtureSession string
 				Conditions struct {
 					Ground int
 					GoingStick string
@@ -323,8 +323,8 @@ func getJSONGoing(year, fixtureID int) Going {
 					Watering string
 					WateringStatus string
 					groundText struct {
-                        Code int
-                        Description string
+						Code int
+						Description string
 					}
 					CreationTimestamp string
 				}
@@ -367,8 +367,8 @@ func getJSONOfficials(year, fixtureID int) [] Official {
 
 	d := struct {
 		Data []struct{
-            Category string
-            Officials []string
+			Category string
+			Officials []string
 		}
 	} {}
 
@@ -392,35 +392,35 @@ func getJSONRace(year, fixtureID int) Race {
 	d := struct {
 		Data []struct{
 			RaceId int
-            FixtureId int
-            RaceNumber string
-            YearOfRace int
-            DivisionSequence int
-            RaceDate string
-            RaceTime string
+			FixtureId int
+			RaceNumber string
+			YearOfRace int
+			DivisionSequence int
+			RaceDate string
+			RaceTime string
 			RaceName string
-            AgeLimit string
-            SexLimit string
-            PrizeAmount int
-            PrizeCurrency string
-            DistanceValue int
-            DistanceChange int
-            RatingBand string
-            RaceCriteriaRaceType string
-            AbandonedReasonCode int
-            BlackTypeRace int
-            Plus10 bool
-            RacingUK int
-            RiderType string
-            AnimalType string
-            WinTime string
-            Runners int
-            MaxRunners int
-            ResultsAvailable int
-            RacecardAvailable int
-            RaceCriteriaMinimumWeight int
-            RaceCriteriaWeightsRaised int
-            Challenger bool
+			AgeLimit string
+			SexLimit string
+			PrizeAmount int
+			PrizeCurrency string
+			DistanceValue int
+			DistanceChange int
+			RatingBand string
+			RaceCriteriaRaceType string
+			AbandonedReasonCode int
+			BlackTypeRace int
+			Plus10 bool
+			RacingUK int
+			RiderType string
+			AnimalType string
+			WinTime string
+			Runners int
+			MaxRunners int
+			ResultsAvailable int
+			RacecardAvailable int
+			RaceCriteriaMinimumWeight int
+			RaceCriteriaWeightsRaised int
+			Challenger bool
 		}
 	} {}
 
@@ -473,33 +473,33 @@ func getJSONEntries(year, fixtureID int) []Entry {
 	d := struct {
 		Data []struct{
 			RaceId int
-            AnimalId int
-            YearOfRace int
-            DivisionSequence int
-            RacehorseName string
-            AgeYears int
-            SexType string
-            ClothNumber int
-            DrawnStall int
-            BhaRating int
-            WeightValue string
+			AnimalId int
+			YearOfRace int
+			DivisionSequence int
+			RacehorseName string
+			AgeYears int
+			SexType string
+			ClothNumber int
+			DrawnStall int
+			BhaRating int
+			WeightValue string
 			WeightText string
-            PenaltyValue int
-            NonRunnerDeclaredReason string
-            nonRunnerDeclaredDate string
-            nonRunnerDeclaredTime string
-            Status string
-            JockeyId int
-            JockeyName string
+			PenaltyValue int
+			NonRunnerDeclaredReason string
+			nonRunnerDeclaredDate string
+			nonRunnerDeclaredTime string
+			Status string
+			JockeyId int
+			JockeyName string
 			TrainerId int
-            TrainerName string
+			TrainerName string
 			OwnerId int
-            OwnerName string
-            WeightsJockeyClaiming int
-            HeadGearAbbreviation string
-            WindSurgeryFirstRun int
-            WbSilkCode string
-            WbSilkDescription string
+			OwnerName string
+			WeightsJockeyClaiming int
+			HeadGearAbbreviation string
+			WindSurgeryFirstRun int
+			WbSilkCode string
+			WbSilkDescription string
 		}
 	} {}
 
@@ -540,5 +540,41 @@ func getJSONEntries(year, fixtureID int) []Entry {
 		})
 	}
 
+	return r
+}
+
+func getJSONNonrunners(year, fixtureID int) Nonrunners {
+
+	r := Nonrunners{}
+
+	d := struct {
+		Data []struct{
+			RaceTitle string
+			RaceDate string
+			RaceTime string
+			Nonrunners []struct {
+					HorseName string
+					DeclaredDate string
+					DeclaredTime string
+					DeclaredReason string
+				}
+		}
+	} {}
+
+	getJSON(genURLNonrunners(year, fixtureID), &d)
+
+	if len(d.Data) > 0 {
+		r.Title = d.Data[0].RaceTitle
+		r.Datatime = datatimeParse(d.Data[0].RaceDate+" "+d.Data[0].RaceTime)
+
+		for _, d := range d.Data[0].Nonrunners {
+			r.NR = append(r.NR, Nonrunner{
+				Horse: d.HorseName,
+				Reason: d.DeclaredReason,
+				Datatime:  datatimeParse(d.DeclaredDate+" "+d.DeclaredTime),
+			})
+		}
+	}
+	
 	return r
 }
