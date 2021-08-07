@@ -37,12 +37,12 @@ func getJSON(u url.URL, data interface{}) {
 
 	var req *http.Request
 
-	proxyconnect := func () {
+	proxyconnect := func() {
 		configProxy()
 		getJSON(u, data)
 	}
 
-	transport.Proxy = http.ProxyURL(&url.URL{Host: config.Proxy.Host+":"+config.Proxy.Port})
+	transport.Proxy = http.ProxyURL(&url.URL{Host: config.Proxy.Host + ":" + config.Proxy.Port})
 
 	if r, e := http.NewRequest("GET", u.String(), nil); e == nil {
 		req = r
@@ -64,16 +64,16 @@ func getJSON(u url.URL, data interface{}) {
 	if r, e := client.Do(req); e == nil {
 
 		if r.StatusCode == 200 {
-			fmt.Print("\033[1;" + colorM+"m")
-			log.Println("get status:\033[0;" + colorM+"m", r.StatusCode, "\033[000m")
+			fmt.Print("\033[1;" + colorM + "m")
+			log.Println("get status:\033[0;"+colorM+"m", r.StatusCode, "\033[000m")
 		} else {
-			fmt.Print("\033[1;" + colorE+"m")
-			log.Println("get status:\033[0;" + colorE+"m", r.StatusCode, "\033[000m")
+			fmt.Print("\033[1;" + colorE + "m")
+			log.Println("get status:\033[0;"+colorE+"m", r.StatusCode, "\033[000m")
 			proxyconnect()
 		}
-	
+
 		if b, e := ioutil.ReadAll(r.Body); e == nil {
-	
+
 			if e := json.Unmarshal(b, data); e != nil {
 				log.Fatal(e)
 			}
@@ -83,10 +83,10 @@ func getJSON(u url.URL, data interface{}) {
 
 		se := e.Error()
 
-		fmt.Print("\033[1;" + colorE+"m")
-		log.Println("\033[0;" + colorE+"m"+se+"\033[000m")
-		
-		if strings.Contains(se, "proxyconnect") || strings.Contains(se, "connection")|| strings.Contains(se, "exceeded") {
+		fmt.Print("\033[1;" + colorE + "m")
+		log.Println("\033[0;" + colorE + "m" + se + "\033[000m")
+
+		if strings.Contains(se, "proxyconnect") || strings.Contains(se, "connection") || strings.Contains(se, "exceeded") {
 			proxyconnect()
 		}
 	}
@@ -97,22 +97,21 @@ func getJSONRacecourses() []Racecourse {
 	r := make([]Racecourse, 0)
 
 	d := struct {
-		Data []struct{
-			CourseId int
-			Name string
-			Type string
+		Data []struct {
+			CourseId        int
+			Name            string
+			Type            string
 			TrackHandedness string
-			Region string
-			Postcode string
-			Latitude string
-			Longitude string
-			FirstRace string
+			Region          string
+			Postcode        string
+			Latitude        string
+			Longitude       string
+			FirstRace       string
 			NextFixtureDate string
 		} `json:"data"`
-	} {}
+	}{}
 
 	getJSON(genURLRacecourses(), &d)
-
 
 	for _, d := range d.Data {
 
@@ -128,20 +127,20 @@ func getJSONRacecourses() []Racecourse {
 			log.Fatal(err)
 		}
 
-		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.NextFixtureDate));  e == nil {
+		if t, e := time.Parse("2006-01-02", strings.TrimSpace(d.NextFixtureDate)); e == nil {
 			nextFixture = t
 		}
 
 		r = append(r, Racecourse{
-			ID : d.CourseId,
-			Name: d.Name,
-			Type : strings.ToUpper(d.Type),
-			Handedness : strings.ToUpper(d.TrackHandedness),
-			Region : strings.ToUpper(d.Region),
-			Post : strings.ToUpper(d.Postcode),
-			Coordinate: GEO{Latitude : latitude, Longitude : longitude},
-			FirstRace : datatimeParse(d.FirstRace),
-			NextFixture : nextFixture,
+			ID:          d.CourseId,
+			Name:        d.Name,
+			Type:        strings.ToUpper(d.Type),
+			Handedness:  strings.ToUpper(d.TrackHandedness),
+			Region:      strings.ToUpper(d.Region),
+			Post:        strings.ToUpper(d.Postcode),
+			Coordinate:  GEO{Latitude: latitude, Longitude: longitude},
+			FirstRace:   datetimeParse(d.FirstRace),
+			NextFixture: nextFixture,
 		})
 	}
 
@@ -153,63 +152,63 @@ func getJSONFixture(year, fixtureID int) Fixture {
 	var r Fixture
 
 	d := struct {
-		Data []struct{
-			FixtureID int 
-			FixtureYear int 
-			FixtureDate string 
-			MetingID int 
-			CourseID int 
-			CourseName string 
-			TicketsLink string 
-			AlertLevel int 
-			AbandonedReasonCode int 
-			FixtureType string 
-			FixtureSession string 
-			RacingTrackType string 
-			RacePlanningCode string 
-			StewardsReport string  
-			ResultsAvailable int 
-			WeatherText string 
-			WeatherUpdatedAt string 
-			StallsText string 
-			StallsUpdatedAt string 
-			GoingText string 
-			GoingUpdatedAt string 
-			InspectionsText string 
+		Data []struct {
+			FixtureID            int
+			FixtureYear          int
+			FixtureDate          string
+			MetingID             int
+			CourseID             int
+			CourseName           string
+			TicketsLink          string
+			AlertLevel           int
+			AbandonedReasonCode  int
+			FixtureType          string
+			FixtureSession       string
+			RacingTrackType      string
+			RacePlanningCode     string
+			StewardsReport       string
+			ResultsAvailable     int
+			WeatherText          string
+			WeatherUpdatedAt     string
+			StallsText           string
+			StallsUpdatedAt      string
+			GoingText            string
+			GoingUpdatedAt       string
+			InspectionsText      string
 			InspectionsUpdatedAt string
-			RailText string 
-			RailUpdatedAt string 
-			OtherText string 
-			OtherUpdatedAt string
-			WateringText string
-			WateringUpdatedAt string
-			LastUpdated string
+			RailText             string
+			RailUpdatedAt        string
+			OtherText            string
+			OtherUpdatedAt       string
+			WateringText         string
+			WateringUpdatedAt    string
+			LastUpdated          string
 		}
-	} {}
+	}{}
 
 	getJSON(genURLFixture(year, fixtureID), &d)
 
 	if len(d.Data) > 0 {
 
-		r = Fixture {
-			ID: d.Data[0].FixtureID,
-			Date: dataParse(d.Data[0].FixtureDate),
-			MetingID : d.Data[0].MetingID,
+		r = Fixture{
+			ID:           d.Data[0].FixtureID,
+			Date:         dateParse(d.Data[0].FixtureDate),
+			MetingID:     d.Data[0].MetingID,
 			RacecourseID: d.Data[0].CourseID,
-			Racecourse: d.Data[0].CourseName,
-			Abandoned : d.Data[0].AbandonedReasonCode > 0,
-			Type: d.Data[0].FixtureType,
-			Session: d.Data[0].FixtureSession,
-			Surface: d.Data[0].RacingTrackType,
-			Planning: d.Data[0].RacePlanningCode,
-			Weather: TU{T: d.Data[0].WateringText, U: datatimeParse(d.Data[0].WateringUpdatedAt)},
-			Stalls: TU{T: d.Data[0].StallsText, U: datatimeParse(d.Data[0].StallsUpdatedAt)},
-			Going: TU{T: d.Data[0].GoingText, U: datatimeParse(d.Data[0].GoingUpdatedAt)},
-			Inspection: TU{T: d.Data[0].InspectionsText, U: datatimeParse(d.Data[0].InspectionsText)},
-			Rail: TU{T: d.Data[0].RailText, U: datatimeParse(d.Data[0].RailUpdatedAt)},
-			Watering: TU{T: d.Data[0].WateringText, U: datatimeParse(d.Data[0].WateringUpdatedAt)},
-			Other: TU{T: d.Data[0].OtherText, U: datatimeParse(d.Data[0].OtherUpdatedAt)},
-			Updated: datatimeParse(d.Data[0].LastUpdated),
+			Racecourse:   d.Data[0].CourseName,
+			Abandoned:    d.Data[0].AbandonedReasonCode > 0,
+			Type:         d.Data[0].FixtureType,
+			Session:      d.Data[0].FixtureSession,
+			Surface:      d.Data[0].RacingTrackType,
+			Planning:     d.Data[0].RacePlanningCode,
+			Weather:      TU{T: d.Data[0].WateringText, U: datetimeParse(d.Data[0].WateringUpdatedAt)},
+			Stalls:       TU{T: d.Data[0].StallsText, U: datetimeParse(d.Data[0].StallsUpdatedAt)},
+			Going:        TU{T: d.Data[0].GoingText, U: datetimeParse(d.Data[0].GoingUpdatedAt)},
+			Inspection:   TU{T: d.Data[0].InspectionsText, U: datetimeParse(d.Data[0].InspectionsText)},
+			Rail:         TU{T: d.Data[0].RailText, U: datetimeParse(d.Data[0].RailUpdatedAt)},
+			Watering:     TU{T: d.Data[0].WateringText, U: datetimeParse(d.Data[0].WateringUpdatedAt)},
+			Other:        TU{T: d.Data[0].OtherText, U: datetimeParse(d.Data[0].OtherUpdatedAt)},
+			Updated:      datetimeParse(d.Data[0].LastUpdated),
 		}
 	}
 
@@ -221,58 +220,57 @@ func getJSONRaces(year, fixtureID int) []Race {
 	r := make([]Race, 0)
 
 	d := struct {
-		Data []struct{
-			RaceId int
-			YearOfRace int
-			DivisionSequence int
-			RaceDate string
-			RaceTime string
-			RaceName string
-			AgeLimit string
-			PrizeAmount int
-			PrizeCurrency string
-			RaceClass int
-			RatingBand string
-			RawDistanceText string
-			DistanceValue int
-			DistanceText string
-			DistanceChange int
+		Data []struct {
+			RaceId               int
+			YearOfRace           int
+			DivisionSequence     int
+			RaceDate             string
+			RaceTime             string
+			RaceName             string
+			AgeLimit             string
+			PrizeAmount          int
+			PrizeCurrency        string
+			RaceClass            int
+			RatingBand           string
+			RawDistanceText      string
+			DistanceValue        int
+			DistanceText         string
+			DistanceChange       int
 			RaceCriteriaRaceType string
-			AbandonedReasonCode int
-			BlackTypeRace int
-			DistanceChangeText string
-			Plus10 bool
-			WinnersDetails []struct {
-				Position int
-				JockeyName string
-				Trainername string
-				SilkImage string
+			AbandonedReasonCode  int
+			BlackTypeRace        int
+			DistanceChangeText   string
+			Plus10               bool
+			WinnersDetails       []struct {
+				Position      int
+				JockeyName    string
+				Trainername   string
+				SilkImage     string
 				RacehorseName string
 			}
-
 		}
-	} {}
+	}{}
 
 	getJSON(genURLRaces(year, fixtureID), &d)
 
 	for _, d := range d.Data {
 
 		r = append(r, Race{
-			ID: d.RaceId,
-			Division: d.DivisionSequence, 
-			Datatime: datatimeParse(d.RaceDate+" "+d.RaceTime),
-			Name: d.RaceName,
-			Age: d.AgeLimit,
-			Prize: d.PrizeAmount, 
-			Currency: d.PrizeCurrency, 
-			Class: d.RaceClass,
-			Band: d.RatingBand,
-			Distance: d.DistanceValue,
-			Change: d.DistanceChange,
-			Type: d.RaceCriteriaRaceType,
-			Abandoned:  d.AbandonedReasonCode > 0,
-			Black: d.BlackTypeRace > 0,
-			Plus10 : d.Plus10,
+			ID:        d.RaceId,
+			Division:  d.DivisionSequence,
+			Datatime:  datetimeParse(d.RaceDate + " " + d.RaceTime),
+			Name:      d.RaceName,
+			Age:       d.AgeLimit,
+			Prize:     d.PrizeAmount,
+			Currency:  d.PrizeCurrency,
+			Class:     d.RaceClass,
+			Band:      d.RatingBand,
+			Distance:  d.DistanceValue,
+			Change:    d.DistanceChange,
+			Type:      d.RaceCriteriaRaceType,
+			Abandoned: d.AbandonedReasonCode > 0,
+			Black:     d.BlackTypeRace > 0,
+			Plus10:    d.Plus10,
 		})
 	}
 
@@ -282,60 +280,60 @@ func getJSONRaces(year, fixtureID int) []Race {
 func getJSONGoing(year, fixtureID int) Going {
 
 	d := struct {
-		Data struct{
-			FixtureId int
-			CourseId int
+		Data struct {
+			FixtureId   int
+			CourseId    int
 			FixtureYear int
 			FixtureDate string
 			FixtureType string
-			Conditions struct {
-				Ground int
-				GroundText string
-				GoingStick string
+			Conditions  struct {
+				Ground              int
+				GroundText          string
+				GoingStick          string
 				GoingStickAvailable int
 				GoingStickUpdatedAt string
-				Rails string
-				Stalls string
-				WeatherComment string
-				Other string
-				Watering string
-				WateringStatus string
+				Rails               string
+				Stalls              string
+				WeatherComment      string
+				Other               string
+				Watering            string
+				WateringStatus      string
 			}
 
 			ConditionsHistory []struct {
-				FixtureId int
-				CourseId int
-				FixtureYear int
-				FixtureDate string
-				FixtureType string
-				TrackType string
+				FixtureId      int
+				CourseId       int
+				FixtureYear    int
+				FixtureDate    string
+				FixtureType    string
+				TrackType      string
 				FixtureSession string
-				Conditions struct {
-					Ground int
-					GoingStick string
+				Conditions     struct {
+					Ground              int
+					GoingStick          string
 					GoingStickAvailable int
 					GoingStickUpdatedAt string
-					Rails string
-					Stalls string
-					WeatherComment string
-					BookingComment string
-					Other string
-					Watering string
-					WateringStatus string
-					groundText struct {
-						Code int
+					Rails               string
+					Stalls              string
+					WeatherComment      string
+					BookingComment      string
+					Other               string
+					Watering            string
+					WateringStatus      string
+					groundText          struct {
+						Code        int
 						Description string
 					}
 					CreationTimestamp string
 				}
 
-				Tracks [] struct {
-					TrackId int
+				Tracks []struct {
+					TrackId  int
 					RaceType string
 				}
 			}
 		}
-	} {}
+	}{}
 
 	getJSON(genURLGoing(year, fixtureID), &d)
 
@@ -345,39 +343,39 @@ func getJSONGoing(year, fixtureID int) Going {
 		stick = f
 	}
 
-	return Going {
-		FixtureID: d.Data.FixtureId,
-		CourseID: d.Data.CourseId,
-		Datatime: dataParse(d.Data.FixtureDate),
-		Type: d.Data.FixtureType,
-		Code: d.Data.Conditions.Ground,
-		Ground: d.Data.Conditions.GroundText,
-		Stick: FU{F: stick, U: datatimeParse(d.Data.Conditions.GoingStickUpdatedAt)},
-		Rails: d.Data.Conditions.Rails,
-		Stalls: d.Data.Conditions.Stalls,
-		Weather: d.Data.Conditions.WeatherComment,
-		Watering: d.Data.Conditions.Watering,
+	return Going{
+		FixtureID:      d.Data.FixtureId,
+		CourseID:       d.Data.CourseId,
+		Datatime:       dateParse(d.Data.FixtureDate),
+		Type:           d.Data.FixtureType,
+		Code:           d.Data.Conditions.Ground,
+		Ground:         d.Data.Conditions.GroundText,
+		Stick:          FU{F: stick, U: datetimeParse(d.Data.Conditions.GoingStickUpdatedAt)},
+		Rails:          d.Data.Conditions.Rails,
+		Stalls:         d.Data.Conditions.Stalls,
+		Weather:        d.Data.Conditions.WeatherComment,
+		Watering:       d.Data.Conditions.Watering,
 		WateringStatus: d.Data.Conditions.WateringStatus,
 	}
 }
 
-func getJSONOfficials(year, fixtureID int) [] Official {
+func getJSONOfficials(year, fixtureID int) []Official {
 
 	r := make([]Official, 0)
 
 	d := struct {
-		Data []struct{
-			Category string
+		Data []struct {
+			Category  string
 			Officials []string
 		}
-	} {}
+	}{}
 
 	getJSON(genURLOfficials(year, fixtureID), &d)
 
 	for _, d := range d.Data {
 
 		r = append(r, Official{
-			Category: d.Category,
+			Category:  d.Category,
 			Officials: d.Officials,
 		})
 	}
@@ -390,74 +388,74 @@ func getJSONRace(year, fixtureID int) Race {
 	var r Race
 
 	d := struct {
-		Data []struct{
-			RaceId int
-			FixtureId int
-			RaceNumber string
-			YearOfRace int
-			DivisionSequence int
-			RaceDate string
-			RaceTime string
-			RaceName string
-			AgeLimit string
-			SexLimit string
-			PrizeAmount int
-			PrizeCurrency string
-			DistanceValue int
-			DistanceChange int
-			RatingBand string
-			RaceCriteriaRaceType string
-			AbandonedReasonCode int
-			BlackTypeRace int
-			Plus10 bool
-			RacingUK int
-			RiderType string
-			AnimalType string
-			WinTime string
-			Runners int
-			MaxRunners int
-			ResultsAvailable int
-			RacecardAvailable int
+		Data []struct {
+			RaceId                    int
+			FixtureId                 int
+			RaceNumber                string
+			YearOfRace                int
+			DivisionSequence          int
+			RaceDate                  string
+			RaceTime                  string
+			RaceName                  string
+			AgeLimit                  string
+			SexLimit                  string
+			PrizeAmount               int
+			PrizeCurrency             string
+			DistanceValue             int
+			DistanceChange            int
+			RatingBand                string
+			RaceCriteriaRaceType      string
+			AbandonedReasonCode       int
+			BlackTypeRace             int
+			Plus10                    bool
+			RacingUK                  int
+			RiderType                 string
+			AnimalType                string
+			WinTime                   string
+			Runners                   int
+			MaxRunners                int
+			ResultsAvailable          int
+			RacecardAvailable         int
 			RaceCriteriaMinimumWeight int
 			RaceCriteriaWeightsRaised int
-			Challenger bool
+			Challenger                bool
 		}
-	} {}
+	}{}
 
 	getJSON(genURLRace(year, fixtureID), &d)
 
 	if len(d.Data) > 0 {
-		
+
 		number := -1
 		if i, e := strconv.ParseInt(d.Data[0].RaceNumber, 10, 64); e == nil {
 			number = int(i)
 		}
 
 		r = Race{
-			ID: d.Data[0].RaceId,
-			FixtureID: d.Data[0].FixtureId,
-			Number: number,
-			Division: d.Data[0].DivisionSequence,
-			Name: d.Data[0].RaceName,
-			Age: d.Data[0].AgeLimit,
-			Sex: d.Data[0].SexLimit,
-			Prize: d.Data[0].PrizeAmount,
-			Currency: d.Data[0].PrizeCurrency,
-			Band: d.Data[0].RatingBand,
-			Datatime: datatimeParse(d.Data[0].RaceDate+" "+d.Data[0].RaceTime),
-			Distance: d.Data[0].DistanceValue,
-			Change: d.Data[0].DistanceChange,
-			Type: d.Data[0].RaceCriteriaRaceType,
-			Abandoned: d.Data[0].AbandonedReasonCode > 0,
-			Black: d.Data[0].BlackTypeRace > 0,
-			Plus10: d.Data[0].Plus10,
-			RacingUK: d.Data[0].RacingUK > 0,
-			Challenger: d.Data[0].Challenger,
-			Rider: d.Data[0].RiderType,
-			Animal: d.Data[0].AnimalType,
-			WinTime: d.Data[0].WinTime,
-			Runners: d.Data[0].Runners,
-			MaxRunners: d.Data[0].MaxRunners,
+			ID:            d.Data[0].RaceId,
+			FixtureID:     d.Data[0].FixtureId,
+			Number:        number,
+			Division:      d.Data[0].DivisionSequence,
+			Name:          d.Data[0].RaceName,
+			Age:           d.Data[0].AgeLimit,
+			Sex:           d.Data[0].SexLimit,
+			Prize:         d.Data[0].PrizeAmount,
+			Currency:      d.Data[0].PrizeCurrency,
+			Band:          d.Data[0].RatingBand,
+			Datatime:      datetimeParse(d.Data[0].RaceDate + " " + d.Data[0].RaceTime),
+			Distance:      d.Data[0].DistanceValue,
+			Change:        d.Data[0].DistanceChange,
+			Type:          d.Data[0].RaceCriteriaRaceType,
+			Abandoned:     d.Data[0].AbandonedReasonCode > 0,
+			Black:         d.Data[0].BlackTypeRace > 0,
+			Plus10:        d.Data[0].Plus10,
+			RacingUK:      d.Data[0].RacingUK > 0,
+			Challenger:    d.Data[0].Challenger,
+			Rider:         d.Data[0].RiderType,
+			Animal:        d.Data[0].AnimalType,
+			WinTime:       d.Data[0].WinTime,
+			Runners:       d.Data[0].Runners,
+			MaxRunners:    d.Data[0].MaxRunners,
 			MinimumWeight: d.Data[0].RaceCriteriaMinimumWeight,
 			WeightsRaised: d.Data[0].RaceCriteriaWeightsRaised,
 		}
@@ -471,37 +469,37 @@ func getJSONEntries(year, fixtureID int) []Entry {
 	r := make([]Entry, 0)
 
 	d := struct {
-		Data []struct{
-			RaceId int
-			AnimalId int
-			YearOfRace int
-			DivisionSequence int
-			RacehorseName string
-			AgeYears int
-			SexType string
-			ClothNumber int
-			DrawnStall int
-			BhaRating int
-			WeightValue string
-			WeightText string
-			PenaltyValue int
+		Data []struct {
+			RaceId                  int
+			AnimalId                int
+			YearOfRace              int
+			DivisionSequence        int
+			RacehorseName           string
+			AgeYears                int
+			SexType                 string
+			ClothNumber             int
+			DrawnStall              int
+			BhaRating               int
+			WeightValue             string
+			WeightText              string
+			PenaltyValue            int
 			NonRunnerDeclaredReason string
-			nonRunnerDeclaredDate string
-			nonRunnerDeclaredTime string
-			Status string
-			JockeyId int
-			JockeyName string
-			TrainerId int
-			TrainerName string
-			OwnerId int
-			OwnerName string
-			WeightsJockeyClaiming int
-			HeadGearAbbreviation string
-			WindSurgeryFirstRun int
-			WbSilkCode string
-			WbSilkDescription string
+			nonRunnerDeclaredDate   string
+			nonRunnerDeclaredTime   string
+			Status                  string
+			JockeyId                int
+			JockeyName              string
+			TrainerId               int
+			TrainerName             string
+			OwnerId                 int
+			OwnerName               string
+			WeightsJockeyClaiming   int
+			HeadGearAbbreviation    string
+			WindSurgeryFirstRun     int
+			WbSilkCode              string
+			WbSilkDescription       string
 		}
-	} {}
+	}{}
 
 	getJSON(genURLEntries(year, fixtureID), &d)
 
@@ -512,31 +510,31 @@ func getJSONEntries(year, fixtureID int) []Entry {
 			silkCode = int(i)
 		}
 
-		r = append(r, Entry {
-			RaceID: d.RaceId,
-			Horse: Participant{Name: d.RacehorseName, ID: d.AnimalId},
-			Jockey: Participant{Name: d.JockeyName, ID: d.JockeyId},
-			Trainer: Participant{Name: d.TrainerName, ID: d.TrainerId},
-			Owner: Participant{Name: d.OwnerName, ID: d.OwnerId},
+		r = append(r, Entry{
+			RaceID:   d.RaceId,
+			Horse:    Participant{Name: d.RacehorseName, ID: d.AnimalId},
+			Jockey:   Participant{Name: d.JockeyName, ID: d.JockeyId},
+			Trainer:  Participant{Name: d.TrainerName, ID: d.TrainerId},
+			Owner:    Participant{Name: d.OwnerName, ID: d.OwnerId},
 			Division: d.DivisionSequence,
-			Age: d.AgeYears,
-			Sex: d.SexType,
-			Number: d.ClothNumber,
-			Drawn: d.DrawnStall,
-			Rating: d.BhaRating,
-			Weight: d.WeightValue,
-			Penalty: d.PenaltyValue,
+			Age:      d.AgeYears,
+			Sex:      d.SexType,
+			Number:   d.ClothNumber,
+			Drawn:    d.DrawnStall,
+			Rating:   d.BhaRating,
+			Weight:   d.WeightValue,
+			Penalty:  d.PenaltyValue,
 			Nonrunner: Nonrunner{
-				Horse: d.RacehorseName,
-				Reason: d.NonRunnerDeclaredReason,
-				Datatime: datatimeParse(d.nonRunnerDeclaredDate+" "+d.nonRunnerDeclaredTime),
+				Horse:    d.RacehorseName,
+				Reason:   d.NonRunnerDeclaredReason,
+				Datatime: datetimeParse(d.nonRunnerDeclaredDate + " " + d.nonRunnerDeclaredTime),
 			},
-			Status: d.Status,
-			JockeyClaim: d.WeightsJockeyClaiming,
-			HeadGear: d.HeadGearAbbreviation,
+			Status:              d.Status,
+			JockeyClaim:         d.WeightsJockeyClaiming,
+			HeadGear:            d.HeadGearAbbreviation,
 			WindSurgeryFirstRun: d.WindSurgeryFirstRun,
-			SilkCode: silkCode,
-			SilkDescription: d.WbSilkDescription,
+			SilkCode:            silkCode,
+			SilkDescription:     d.WbSilkDescription,
 		})
 	}
 
@@ -548,34 +546,34 @@ func getJSONNonrunners(year, fixtureID int) Nonrunners {
 	r := Nonrunners{}
 
 	d := struct {
-		Data []struct{
-			RaceTitle string
-			RaceDate string
-			RaceTime string
+		Data []struct {
+			RaceTitle  string
+			RaceDate   string
+			RaceTime   string
 			Nonrunners []struct {
-					HorseName string
-					DeclaredDate string
-					DeclaredTime string
-					DeclaredReason string
-				}
+				HorseName      string
+				DeclaredDate   string
+				DeclaredTime   string
+				DeclaredReason string
+			}
 		}
-	} {}
+	}{}
 
 	getJSON(genURLNonrunners(year, fixtureID), &d)
 
 	if len(d.Data) > 0 {
 		r.Title = d.Data[0].RaceTitle
-		r.Datatime = datatimeParse(d.Data[0].RaceDate+" "+d.Data[0].RaceTime)
+		r.Datatime = datetimeParse(d.Data[0].RaceDate + " " + d.Data[0].RaceTime)
 
 		for _, d := range d.Data[0].Nonrunners {
 			r.NR = append(r.NR, Nonrunner{
-				Horse: d.HorseName,
-				Reason: d.DeclaredReason,
-				Datatime:  datatimeParse(d.DeclaredDate+" "+d.DeclaredTime),
+				Horse:    d.HorseName,
+				Reason:   d.DeclaredReason,
+				Datatime: datetimeParse(d.DeclaredDate + " " + d.DeclaredTime),
 			})
 		}
 	}
-	
+
 	return r
 }
 
@@ -601,45 +599,44 @@ func getJSONFixtures(u url.URL) []Fixture {
 
 	q.Set("fields", strings.Join(fields, ","))
 
-
 	d := struct {
-		Data []struct{
-			FixtureId int
-			MeetingId int
-			CourseId int
-            CourseName string
-            FixtureDate string
-            BcsEvent int
-            AbandonedReasonCode int
-            Region string
-            FixtureType string
-            FixtureSession string
-            RacecardAvailable int
-            EntriesAvailable int
-            BlackTypeRaces int
-            ResultsAvailable bool
+		Data []struct {
+			FixtureId           int
+			MeetingId           int
+			CourseId            int
+			CourseName          string
+			FixtureDate         string
+			BcsEvent            int
+			AbandonedReasonCode int
+			Region              string
+			FixtureType         string
+			FixtureSession      string
+			RacecardAvailable   int
+			EntriesAvailable    int
+			BlackTypeRaces      int
+			ResultsAvailable    bool
 		}
-	} {}
+	}{}
 
 	getJSON(u, &d)
 
 	for _, d := range d.Data {
 
-		r = append(r, Fixture {
-			ID: d.FixtureId,
-			MetingID: d.MeetingId,
-			RacecourseID: d.CourseId,
-			Racecourse: d.CourseName,
-			Date: dataParse(d.FixtureDate),
-			Bcs: d.BcsEvent > 0,
-			Abandoned: d.AbandonedReasonCode > 0,
-			Region: d.Region,
-			Type: d.FixtureType,
-			Session: d.FixtureSession,
+		r = append(r, Fixture{
+			ID:                d.FixtureId,
+			MetingID:          d.MeetingId,
+			RacecourseID:      d.CourseId,
+			Racecourse:        d.CourseName,
+			Date:              dateParse(d.FixtureDate),
+			Bcs:               d.BcsEvent > 0,
+			Abandoned:         d.AbandonedReasonCode > 0,
+			Region:            d.Region,
+			Type:              d.FixtureType,
+			Session:           d.FixtureSession,
 			RacecardAvailable: d.RacecardAvailable > 0,
-			EntriesAvailable: d.EntriesAvailable > 0,
-			BlackTypeRaces: d.BlackTypeRaces > 0,
-			ResultsAvailable: d.ResultsAvailable,
+			EntriesAvailable:  d.EntriesAvailable > 0,
+			BlackTypeRaces:    d.BlackTypeRaces > 0,
+			ResultsAvailable:  d.ResultsAvailable,
 		})
 	}
 

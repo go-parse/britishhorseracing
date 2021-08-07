@@ -18,10 +18,13 @@ package main
 
 import (
 	"database/sql"
-	"strings"
-	"time"
+	"flag"
+	"io/ioutil"
+	"log"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"gopkg.in/yaml.v2"
 )
 
 var config = struct {
@@ -42,7 +45,7 @@ var config = struct {
 var flags = struct {
 	db    *bool
 	proxy *bool
-} {}
+}{}
 
 var DB *sql.DB
 var Proxy = ""
@@ -52,19 +55,51 @@ const colorE = "31" // Error
 
 func main() {
 
-	listener()
-	initialization()
+	// Listen flags.
+	flags.db = flag.Bool("db", false, "database configuration")
+	flags.proxy = flag.Bool("proxy", false, "proxy configuration")
 
-	// for _, d := range  getJSONRacecourses() {
-	// 	fmt.Println("ID",  d.ID)
-	// 	fmt.Println("Name",  d.Name)
-	// 	fmt.Println("Type",  d.Type)
-	// 	fmt.Println("Handedness",  d.Handedness)
-	// 	fmt.Println("Region",  d.Region)
-	// 	fmt.Println("Post",  d.Post)
-	// 	fmt.Println("Coordinate",  d.Coordinate)
-	// 	fmt.Println("FirstRace",  d.FirstRace)
-	// 	fmt.Println("NextFixture",  d.NextFixture)
+	flag.Parse()
+
+	if *flags.proxy {
+		configProxy()
+	}
+
+	if *flags.db {
+		configDB()
+	}
+	//  else {
+	// 	dbOpen()
+	// }
+	// End listen flags.
+
+	// Reading the configuration file.
+	if f, e := os.UserHomeDir(); e == nil {
+
+		if f, err := ioutil.ReadFile(f + "/.britishhorseracing.yaml"); err == nil {
+
+			if e := yaml.Unmarshal(f, &config); e != nil {
+				log.Fatal(e)
+			}
+		}
+
+	} else {
+		log.Fatal(e)
+	}
+	// End reading the configuration file.
+
+	// Examples.
+
+	// for _, d := range getJSONRacecourses() {
+	// 	fmt.Println("ID", d.ID)
+	// 	fmt.Println("Name", d.Name)
+	// 	fmt.Println("Type", d.Type)
+	// 	fmt.Println("Handedness", d.Handedness)
+	// 	fmt.Println("Region", d.Region)
+	// 	fmt.Println("Post", d.Post)
+	// 	fmt.Println("Coordinate", d.Coordinate)
+	// 	fmt.Println("FirstRace", d.FirstRace)
+	// 	fmt.Println("NextFixture", d.NextFixture)
 	// 	fmt.Println("_______________")
 	// }
 
@@ -77,7 +112,6 @@ func main() {
 	// fmt.Println("Racecourse:", fixture.Racecourse)
 	// fmt.Println("Abandoned:", fixture.Abandoned)
 	// fmt.Println("Type:", fixture.Type)
-	// fmt.Println("Type:", fixture.Type)
 	// fmt.Println("Session:", fixture.Session)
 	// fmt.Println("Surface:", fixture.Surface)
 	// fmt.Println("Planning:", fixture.Planning)
@@ -89,7 +123,6 @@ func main() {
 	// fmt.Println("Watering:", fixture.Watering)
 	// fmt.Println("Other:", fixture.Other)
 	// fmt.Println("Updated:", fixture.Updated)
-
 
 	// for _, d := range  getJSONRaces(2021, 12763) {
 	// 	fmt.Println("ID:", d.ID)
@@ -155,7 +188,6 @@ func main() {
 	// fmt.Println("MaxRunners:", race.MaxRunners)
 	// fmt.Println("MinimumWeight:", race.MinimumWeight)
 	// fmt.Println("WeightsRaised:", race.WeightsRaised)
-
 
 	// for _, d := range getJSONEntries(2021, 38656) {
 	// 	fmt.Println("RaceID:",d.RaceID)
@@ -224,7 +256,7 @@ func main() {
 	// 	for _, o := range d.Officials {
 	// 		fmt.Println(o)
 	// 	}
-		
+
 	// 	fmt.Println("_______________")
 	// }
 
@@ -252,7 +284,6 @@ func main() {
 	// fmt.Println(fixturesFromTo.String())
 	// fmt.Println(fixturesForMonth.String())
 
-	
 	// for _, d := range getJSONFixtures(fixturesForMonth){
 	// 	fmt.Println("ID:", d.ID)
 	// 	fmt.Println("MetingID:", d.MetingID)
@@ -270,26 +301,4 @@ func main() {
 	// 	fmt.Println("_______________")
 	// }
 
-}
-
-func dataParse(datatime string) time.Time {
-
-	var r time.Time
-
-	if t, e := time.Parse("2006-01-02", strings.TrimSpace(datatime)); e == nil {
-		r = t.UTC()
-	}
-	
-	return r
-}
-
-func datatimeParse(datatime string) time.Time {
-
-	var r time.Time
-
-	if t, e := time.Parse("2006-01-02 15:04:05", strings.TrimSpace(datatime)); e == nil {
-		r = t.UTC()
-	}
-	
-	return r
 }
