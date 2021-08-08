@@ -88,6 +88,8 @@ func main() {
 	}
 	// End reading the configuration file.
 
+	dbOpen()
+
 	// Examples.
 
 	// for _, d := range getJSONRacecourses() {
